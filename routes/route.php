@@ -1,6 +1,6 @@
 <?php
 
-require_once '../app/ErrorHandler.php';
+require_once '../../app/ErrorHandler.php';
 
 class Router
 {
