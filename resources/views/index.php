@@ -21,8 +21,8 @@ $router->get('/home', function() {
     include '../../resources/views/home.php';
 });
 
-// $router->get('/submission', function() {
-//     include '../../resources/views/submission.php';
-// });
+$router->get('/submission', function() {
+    include '../../resources/views/submission.php';
+});
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);

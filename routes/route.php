@@ -1,5 +1,7 @@
 <?php
 
+require_once '../app/ErrorHandler.php';
+
 class Router
 {
     private $routes = [];
@@ -28,7 +30,6 @@ class Router
             }
         }
 
-        http_response_code(404);
-        include '../../resources/views/components/404.html';
+        ErrorHandler::handle404();
     }
 }
