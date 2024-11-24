@@ -5,7 +5,6 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0 20px;
     margin: 0 auto;
     margin-top: 50px;
 }
@@ -32,7 +31,6 @@
     transition: left 0.5s ease, width 0.5s ease;
 }
 
-
 .navlink {
     width: 402px;
     height: 25px;
@@ -53,4 +51,63 @@
     font-weight: 400;
     word-wrap: break-word;
     text-decoration: none;
+}
+
+.contain {
+    width: 1791px;
+    height: 74.92px;
+    display: flex;
+}
+
+.logo-contain {
+    width: 116px;
+    height: 74.92px;
+    position: relative;
+    left: 76px;
+    top: 45px;
+}
+
+.logo {
+    width: 62.83px;
+    height: 74.92px;
+    left: 0px;
+    top: 0px;
+    position: absolute;
+    user-select: none;
+}
+
+.text {
+    width: 68.88px;
+    height: 36.25px;
+    left: 47.12px;
+    top: 30.21px;
+    position: absolute;
+    color: #2C8069;
+    font-size: 28px;
+    font-family: Outfit;
+    font-weight: 400;
+    word-wrap: break-word;
+    user-select: none;
+}
+
+.two-icon {
+    width: 97px;
+    height: 34px;
+    position: relative;
+    justify-content: flex-end;
+    margin-top: 65px;
+
+}
+
+.notification {
+    width: 34px;
+    height: 34px;
+    position: relative;
+    margin-right: 29px;
+}
+
+.log-out {
+    width: 34px;
+    height: 34px;
+    position: absolute;
 }

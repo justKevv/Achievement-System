@@ -1,32 +1,77 @@
-<link rel="stylesheet" href="../../css/navbar.css">
-<div class="navbar">
-    <div class="white-pill"></div>
-    <div class="selectable"></div>
-    <div class="navlink">
-        <a href="#" class="link">Dashboard</a>
-        <a href="#" class="link">Submission</a>
-        <a href="#" class="link">Rank</a>
+<link rel="stylesheet" href="/resources/css/navbar.css">
+<div class="contain">
+    <div class="logo-contain">
+        <img class="logo" src="/logo.png" alt="Logo SARS">
+        <div class="text">SARS</div>
+    </div>
+    <div class="navbar">
+        <div class="white-pill"></div>
+        <div class="selectable"></div>
+        <div class="navlink">
+            <a href="/home" class="link">Dashboard</a>
+            <a href="/submission" class="link">Submission</a>
+            <a href="/rank" class="link">Rank</a>
+        </div>
+    </div>
+    <div class="two-icon">
+        <img src="/notification.png" alt="" class="notification">
+        <img src="/log-out.png" alt="" class="log-out">
     </div>
 </div>
+
 <script>
-    document.querySelectorAll('.navlink .link').forEach((link, index) => {
-        link.addEventListener('click', () => {
+    function updateSelectablePosition(link) {
+        const selectableDiv = document.querySelector('.selectable');
+        const linkLeft = link.offsetLeft;
+
+        selectableDiv.style.left = `${linkLeft}px`;
+
+        if (link.textContent === 'Rank') {
+            selectableDiv.style.width = '130px';
+        } else if (link.textContent === "Submission" || link.textContent === "Dashboard") {
+            selectableDiv.style.width = '185px';
+        } else {
+            selectableDiv.style.width = '0px';
+        }
+    }
+    document.querySelectorAll('.navlink .link').forEach((link) => {
+        link.addEventListener('click', (event) => {
             event.preventDefault();
-            const selectableDiv = document.querySelector('.selectable');
-            const whitePill = document.querySelector('.white-pill');
-            const linkLeft = link.offsetLeft;
+            updateSelectablePosition(link);
+            localStorage.setItem('lastClickedLink', link.textContent);
 
-            selectableDiv.style.left = `${linkLeft}px`;
+            // Load content via AJAX
+            const url = link.href;
+            fetch(url)
+                .then(response => response.text())
+                .then(html => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, 'text/html');
+                    const newContent = doc.querySelector('#content').innerHTML;
+                    const contentDiv = document.getElementById('content');
+                    if (contentDiv) {
+                        contentDiv.innerHTML = newContent;
+                        window.history.pushState({ path: url }, '', url);
+                    } else {
+                        console.error('Error: content div not found');
+                    }
+                })
+                .catch(error => console.error('Error loading content:', error));
+        });
+    });
 
-
-            if (link.textContent === 'Rank') {
-                selectableDiv.style.width = '130px';
-            } else if (link.textContent === "Submission" || link.textContent === "Dashboard") {
-                selectableDiv.style.width = '185px';
-            } else {
-                selectableDiv.style.width = '0px';
+    window.addEventListener('load', () => {
+        const lastClickedLink = localStorage.getItem('lastClickedLink');
+        if (lastClickedLink) {
+            const link = Array.from(document.querySelectorAll('.navlink .link')).find(link => link.textContent === lastClickedLink);
+            if (link) {
+                const selectableDiv = document.querySelector('.selectable');
+                selectableDiv.style.transition = 'none';
+                updateSelectablePosition(link);
+                selectableDiv.offsetHeight; // Trigger reflow
+                selectableDiv.style.transition = 'left 0.5s ease, width 0.5s ease';
             }
+        }
+    });
 
-        })
-    })
 </script>
