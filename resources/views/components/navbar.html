@@ -20,10 +20,11 @@
 
 
             if (link.textContent === 'Rank') {
-                console.log('Rank link clicked');
                 selectableDiv.style.width = '130px';
-            } else {
+            } else if (link.textContent === "Submission" || link.textContent === "Dashboard") {
                 selectableDiv.style.width = '185px';
+            } else {
+                selectableDiv.style.width = '0px';
             }
 
         })
