@@ -9,11 +9,11 @@
 
 <body>
     <?php
-
-    include '../../resources/views/components/navbar.html'
-
+    require_once '../resources/views/components/navbar.html';
     ?>
-    <h1>Welcome</h1>
+    <div id="content">
+        <h1>Welcome</h1>
+    </div>
 </body>
 
 </html>
