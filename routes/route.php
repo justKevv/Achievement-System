@@ -1,6 +1,6 @@
 <?php
 
-require_once '../../app/ErrorHandler.php';
+require_once '../app/ErrorHandler.php';
 
 class Router
 {
@@ -20,6 +20,14 @@ class Router
 
     public function post($path, $callback){
         $this->addRoute('POST', $path, $callback);
+    }
+
+    public function put($path, $callback){
+        $this->addRoute('PUT', $path, $callback);
+    }
+
+    public function delete($path, $callback){
+        $this->addRoute("DELETE", $path, $callback);
     }
 
     public function dispatch($method, $uri) {
