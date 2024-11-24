@@ -1,15 +1,17 @@
 <?php
 
-require "../../routes/route.php";
-require "../../database/database.php";
-require "../../app/Controller/UserController.php";
+require "../routes/route.php";
+require "../database/database.php";
+require "../app/View.php";
+
+require "../app/Controller/UserController.php";
 
 $db = new Database();
 $router = new Router();
 $userController = new UserController($db);
 
 $router->get('/', function() {
-    include '../../resources/views/login.html';
+    View::render('../resources/views/login.html');
 });
 
 $router->post('/', function () use ($userController) {
@@ -18,11 +20,15 @@ $router->post('/', function () use ($userController) {
 
 
 $router->get('/home', function() {
-    include '../../resources/views/home.php';
+    View::render('../resources/views/home.php');
 });
 
 $router->get('/submission', function() {
-    include '../../resources/views/submission.php';
+    View::render('../resources/views/submission.php');
+});
+
+$router->get('/rank', function() {
+    View::render('../resources/views/rank.php');
 });
 
 $router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
