@@ -14,12 +14,8 @@
 
     ?>
     <div id="content">
-        <h1>Submission</h1>
-        <form action="/submission" method="post">
-
-        </form>
+        <h1>Rank</h1>
     </div>
-
 </body>
 
 </html>
