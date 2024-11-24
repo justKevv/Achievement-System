@@ -1,6 +1,31 @@
-<nav>
-    <ul>
-        <li><a href="/home">Home</a></li>
-        <li><a href="/submission">Submission</a></li>
-    </ul>
-</nav>
+<link rel="stylesheet" href="../../css/navbar.css">
+<div class="navbar">
+    <div class="white-pill"></div>
+    <div class="selectable"></div>
+    <div class="navlink">
+        <a href="#" class="link">Dashboard</a>
+        <a href="#" class="link">Submission</a>
+        <a href="#" class="link">Rank</a>
+    </div>
+</div>
+<script>
+    document.querySelectorAll('.navlink .link').forEach((link, index) => {
+        link.addEventListener('click', () => {
+            event.preventDefault();
+            const selectableDiv = document.querySelector('.selectable');
+            const whitePill = document.querySelector('.white-pill');
+            const linkLeft = link.offsetLeft;
+
+            selectableDiv.style.left = `${linkLeft}px`;
+
+
+            if (link.textContent === 'Rank') {
+                console.log('Rank link clicked');
+                selectableDiv.style.width = '130px';
+            } else {
+                selectableDiv.style.width = '185px';
+            }
+
+        })
+    })
+</script>
