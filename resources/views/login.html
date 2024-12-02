@@ -13,13 +13,18 @@
         <label for="password">Password:</label>
         <input type="password" id="password" name="password" required>
         <br>
-        <button type="submit">Login</button>
+        <button type="submit" onclick="resetSelectable()">Login</button>
     </form>
 
     <script>
         window.onload = function() {
             document.getElementById('loginForm').reset();
         }
+
+        function resetSelectable() {
+            localStorage.removeItem('lastClickedLink');
+        }
+
     </script>
 </body>
 </html>
