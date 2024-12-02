@@ -1,5 +1,7 @@
 <?php
 
+namespace App;
+
 class ErrorHandler
 {
     public static function handle404()
