@@ -1,20 +1,32 @@
 <?php
 
-require_once(__DIR__ . '/../config/config.php');
+namespace Config;
 
-class Database
+use PDO;
+use PDOException;
+use Exception;
+
+class database
 {
     private $conn;
+    private string $dbHost;
+    private string $dbName;
+    private string $dbUsername;
+    private string $dbPassword;
 
     public function __construct()
     {
+        $this->dbHost = $_ENV['DB_HOST'];
+        $this->dbName = $_ENV['DB_NAME'];
+        $this->dbUsername = $_ENV['DB_USER'];
+        $this->dbPassword = $_ENV['DB_PASS'];
         $this->connect();
     }
 
     private function connect()
     {
         try {
-            $this->conn = new PDO("sqlsrv:Server=" . DB_HOST . ";Database=" . DB_NAME, DB_USER, DB_PASS);
+            $this->conn = new PDO("sqlsrv:Server=" . $this->dbHost . ";Database=" . $this->dbName, $this->dbUsername, $this->dbPassword);
             $this->conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             // echo "Connected successfully";
         } catch (PDOException $e) {
@@ -41,7 +53,9 @@ class Database
             $stmt->execute();
             return $stmt;
         } catch (PDOException $e) {
-            throw new Exception("Prepare and execute failed: " . $e->getMessage());
+            throw new Exception("Prepare and execute failed: " . $e->getMessage() .
+                "\nSQL: " . $sql .
+                "\nParams: " . print_r($params, true));
         }
     }
 
@@ -55,13 +69,3 @@ class Database
         $this->close();
     }
 }
-
-// $db = new Database();
-
-// $stmt = $db->prepare("SELECT * FROM dbo.roles");
-
-// $stmt->execute();
-
-// while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-//     print_r($row);
-// }

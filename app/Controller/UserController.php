@@ -1,31 +1,35 @@
 <?php
 
-require "../../app/Models/User.php";
+namespace App\Controller;
 
-class UserController
+require_once __DIR__ . "/Controller.php";
+
+use App\Models\User;
+
+class UserController extends Controller
 {
-    private $db;
     private $userModel;
 
     public function __construct($db)
     {
-        $this->db = $db;
+        parent::__construct($db);
         $this->userModel = new User($db);
     }
 
-    public function login($username, $user_password)
+    public function login($email, $user_password)
     {
 
-        $username = filter_var($username, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
+        $email = filter_var($email, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
         $user_password = filter_var($user_password, FILTER_SANITIZE_FULL_SPECIAL_CHARS);
 
-        $user = $this->userModel->findByUsername($username);
-        if ($user && $user['user_password'] === $user_password)  {
-            header('Location: /home');
-            return;
+        $user = $this->userModel->findByEmail($email);
+
+        if ($user && strtoupper(hash('sha256', $user_password)) === $user['user_password']) {
+            $response = new \Slim\Psr7\Response();
+            return $response->withHeader('Location', '/home')->withStatus(302);
         } else {
-            echo "<script>alert('Login failed');</script>";
+            $response = new \Slim\Psr7\Response();
+            return $response->withHeader('Location', '/')->withStatus(302);
         }
-        header('Location: /');
     }
 }
