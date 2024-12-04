@@ -1,34 +1,23 @@
 <?php
 
-require "../routes/route.php";
-require "../database/database.php";
-require "../app/View.php";
+require_once "../vendor/autoload.php";
 
-require "../app/Controller/UserController.php";
+if (session_status() == PHP_SESSION_NONE) {
+    session_start();
+}
 
-$db = new Database();
-$router = new Router();
-$userController = new UserController($db);
+use Dotenv\Dotenv;
+use Dotenv\Exception\InvalidPathException;
 
-$router->get('/', function() {
-    View::render('../resources/views/login.html');
-});
+try {
+    $projectRoot = dirname(__DIR__);
 
-$router->post('/', function () use ($userController) {
-    $userController->login($_POST['username'], $_POST['password']);
-});
+    $dotenv = Dotenv::createImmutable($projectRoot);
+    $dotenv->load();
 
+    require_once "../routes/app.php";
 
-$router->get('/home', function() {
-    View::render('../resources/views/home.php');
-});
-
-$router->get('/submission', function() {
-    View::render('../resources/views/submission.php');
-});
-
-$router->get('/rank', function() {
-    View::render('../resources/views/rank.php');
-});
-
-$router->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
+} catch (InvalidPathException $e) {
+    echo "Error: " . $e->getMessage() . "\n";
+    exit();
+}
