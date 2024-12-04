@@ -1,7 +1,7 @@
 <?php
 
 use Slim\Factory\AppFactory;
-use Database\Database;
+use Config\Database;
 
 $app = AppFactory::create();
 $db = new Database();
