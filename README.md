@@ -7,7 +7,8 @@ A web-based system for managing and tracking student achievements using PHP Slim
 - PHP 8.0 or higher
 - Composer
 - SQL Server
-- Web server (Apache/Nginx)
+- Laragon
+- Web server Nginx
 
 ## Installation
 
