@@ -42,29 +42,8 @@
             updateSelectablePosition(link);
             localStorage.setItem('lastClickedLink', link.textContent);
 
-            const page = link.getAttribute('href').replace('/', '');
-
-            try {
-                const response = await fetch('/dashboard', {
-                    headers: {
-                        'X-Requested-Page': page
-                    }
-                });
-                const html = await response.text();
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const newContent = doc.querySelector('#content').innerHTML;
-                const contentDiv = document.getElementById('content');
-
-                if (contentDiv) {
-                    contentDiv.innerHTML = newContent;
-                    window.history.pushState({ page }, '', '/dashboard');
-                } else {
-                    console.error('Error: content div not found');
-                }
-            } catch (error) {
-                console.error('Error loading content:', error);
-            }
+            const page = link.getAttribute('href');
+            await window.loadPage(page);
         });
     });
 
@@ -84,20 +63,7 @@
 
     window.onpopstate = function(event) {
         if (event.state && event.state.page) {
-            const page = event.state.page;
-            fetch('/dashboard', {
-                headers: {
-                    'X-Requested-Page': page
-                }
-            })
-            .then(response => response.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const content = doc.querySelector('#content').innerHTML;
-                document.querySelector('#content').innerHTML = content;
-            });
+            window.loadPage(event.state.page);
         }
     };
-
 </script>

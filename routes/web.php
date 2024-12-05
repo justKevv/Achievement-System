@@ -7,72 +7,56 @@ use App\ErrorHandler;
 use App\Controller\UserController;
 
 return function (App $app, $db) {
-    $app->get('/', function ($request, $response, $args) {
-        View::render('../resources/views/login.html');
-        return $response;
+
+    // Login Route
+    $app->group('/', function ($web) use ($db) {
+        $web->get('', function ($request, $response, $args) {
+            View::render('../resources/views/login.html');
+            return $response;
+        });
+
+        $web->post('', function ($request, $response, $args) use ($db) {
+            $data = $request->getParsedBody();
+
+            $userController = new UserController($db);
+            return $userController->login(
+                $data['email'] ?? '',  // Use email field name to match form
+                $data['password'] ?? '' // Use password field name to match form
+            );
+        });
+
+        $web->get('logout', function ($request, $response, $args) use ($db) {
+            $userController = new UserController($db);
+            return $userController->logout();
+        });
     });
 
-    $app->post('/', function ($request, $response, $args) use ($db) {
-        $data = $request->getParsedBody();
 
-        $userController = new UserController($db);
-        return $userController->login(
-            $data['email'] ?? '',  // Use email field name to match form
-            $data['password'] ?? '' // Use password field name to match form
-        );
-    });
 
-    $app->get('/logout', function ($request, $response, $args) use ($db) {
-        $userController = new UserController($db);
-        return $userController->logout();
-    });
+    $app->get('/dashboard[/{page}]', function ($request, $response, $args) {
+        $page = $args['page'] ?? 'home';
+        $filePath = "../resources/views/pages/{$page}.php";
 
-    $app->get('/dashboard', function ($request, $response, $args) {
-        $page = $request->getHeaderLine('X-Requested-Page') ?: 'home';
+        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
+
+        if ($isAjax) {
+            if (!file_exists($filePath)) {
+                return $response->withStatus(404)
+                    ->getBody()->write("Page not found");
+            }
+            ob_start();
+            require $filePath;
+            $output = ob_get_clean();
+            $response->getBody()->write($output);
+            return $response;
+        }
 
         ob_start();
-        switch ($page) {
-            case 'home':
-                View::render('../resources/views/pages/home.php');
-                break;
-            case 'rank':
-                View::render('../resources/views/pages/rank.php');
-                break;
-            case 'submission':
-                View::render('../resources/views/pages/submission.php');
-                break;
-            default:
-                View::render('../resources/views/pages/home.php');
-                break;
-        }
+        View::render('../resources/views/dashboard.php');
         $output = ob_get_clean();
         $response->getBody()->write($output);
         return $response;
     });
-
-    // $app->get('/home', function ($request, $response, $args) {
-    //     ob_start();
-    //     View::render('../resources/views/home.php');
-    //     $ouput = ob_get_clean();
-    //     $response->getBody()->write($ouput);
-    //     return $response;
-    // });
-
-    // $app->get('/submission', function ($request, $response, $args) {
-    //     ob_start();
-    //     View::render('../resources/views/submission.php');
-    //     $ouput = ob_get_clean();
-    //     $response->getBody()->write($ouput);
-    //     return $response;
-    // });
-
-    // $app->get('/rank', function ($request, $response, $args) {
-    //     ob_start();
-    //     View::render('../resources/views/rank.php');
-    //     $ouput = ob_get_clean();
-    //     $response->getBody()->write($ouput);
-    //     return $response;
-    // });
 
     // Handle 404 Page
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {
