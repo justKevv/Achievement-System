@@ -7,14 +7,16 @@
         <div class="white-pill"></div>
         <div class="selectable"></div>
         <div class="navlink">
-            <a href="/home" class="link">Dashboard</a>
-            <a href="/submission" class="link">Submission</a>
-            <a href="/rank" class="link">Rank</a>
+            <a href="home" class="link">Dashboard</a>
+            <a href="submission" class="link">Submission</a>
+            <a href="rank" class="link">Rank</a>
         </div>
     </div>
     <div class="two-icon">
         <img src="/assets/icons/notification.png" alt="" class="notification">
-        <img src="/assets/icons/log-out.png" alt="" class="log-out">
+        <a href="/logout">
+            <img src="/assets/icons/log-out.png" alt="" class="log-out">
+        </a>
     </div>
 </div>
 
@@ -33,29 +35,36 @@
             selectableDiv.style.width = '0px';
         }
     }
+
     document.querySelectorAll('.navlink .link').forEach((link) => {
-        link.addEventListener('click', (event) => {
+        link.addEventListener('click', async (event) => {
             event.preventDefault();
             updateSelectablePosition(link);
             localStorage.setItem('lastClickedLink', link.textContent);
 
-            // Load content via AJAX
-            const url = link.href;
-            fetch(url)
-                .then(response => response.text())
-                .then(html => {
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, 'text/html');
-                    const newContent = doc.querySelector('#content').innerHTML;
-                    const contentDiv = document.getElementById('content');
-                    if (contentDiv) {
-                        contentDiv.innerHTML = newContent;
-                        window.history.pushState({ path: url }, '', url);
-                    } else {
-                        console.error('Error: content div not found');
+            const page = link.getAttribute('href').replace('/', '');
+
+            try {
+                const response = await fetch('/dashboard', {
+                    headers: {
+                        'X-Requested-Page': page
                     }
-                })
-                .catch(error => console.error('Error loading content:', error));
+                });
+                const html = await response.text();
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const newContent = doc.querySelector('#content').innerHTML;
+                const contentDiv = document.getElementById('content');
+
+                if (contentDiv) {
+                    contentDiv.innerHTML = newContent;
+                    window.history.pushState({ page }, '', '/dashboard');
+                } else {
+                    console.error('Error: content div not found');
+                }
+            } catch (error) {
+                console.error('Error loading content:', error);
+            }
         });
     });
 
@@ -72,5 +81,23 @@
             }
         }
     });
+
+    window.onpopstate = function(event) {
+        if (event.state && event.state.page) {
+            const page = event.state.page;
+            fetch('/dashboard', {
+                headers: {
+                    'X-Requested-Page': page
+                }
+            })
+            .then(response => response.text())
+            .then(html => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(html, 'text/html');
+                const content = doc.querySelector('#content').innerHTML;
+                document.querySelector('#content').innerHTML = content;
+            });
+        }
+    };
 
 </script>
