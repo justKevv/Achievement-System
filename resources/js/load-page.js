@@ -10,7 +10,7 @@ window.loadPage = async function (page) {
         }
         const html = await response.text();
         document.querySelector('#content').innerHTML = html;
-        window.history.pushState({ page }, '', `/dashboard`);
+        window.history.replaceState({ page }, '', `/dashboard`);
     } catch (error) {
         console.error('Error loading page:', error);
         document.querySelector('#content').innerHTML = `<h1>Error: ${error.message}</h1>`;
