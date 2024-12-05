@@ -2,8 +2,7 @@
 
 namespace App\Controller;
 
-require_once __DIR__ . "/Controller.php";
-
+use App\Controller\Controller;
 use App\Models\User;
 
 class UserController extends Controller
@@ -25,11 +24,22 @@ class UserController extends Controller
         $user = $this->userModel->findByEmail($email);
 
         if ($user && strtoupper(hash('sha256', $user_password)) === $user['user_password']) {
+            // Store user data in session
+            $_SESSION['user_id'] = $user['user_id'];
+            $_SESSION['role_id'] = $user['role_id'];
+            $_SESSION['is_logged_in'] = true;
+
             $response = new \Slim\Psr7\Response();
-            return $response->withHeader('Location', '/home')->withStatus(302);
+            return $response->withHeader('Location', '/dashboard')->withStatus(302);
         } else {
             $response = new \Slim\Psr7\Response();
             return $response->withHeader('Location', '/')->withStatus(302);
         }
+    }
+
+    public function logout() {
+        session_destroy();
+        $response = new \Slim\Psr7\Response();
+        return $response->withHeader('Location', '/')->withStatus(302);
     }
 }
