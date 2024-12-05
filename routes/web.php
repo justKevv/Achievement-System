@@ -4,6 +4,7 @@ use Slim\App;
 use App\View;
 use App\ErrorHandler;
 
+use App\Controller\ForgetPasswordController;
 use App\Controller\UserController;
 
 return function (App $app, $db) {
@@ -21,6 +22,22 @@ return function (App $app, $db) {
             $data['password'] ?? '' // Use password field name to match form
         );
     });
+
+    $app->get('/forget-password', function($request, $response, $args) {
+        View::render('../resources/views/forget-password.html');
+    });
+
+    $app->post('/forget-password', function($request, $response, $args) use ($db) {
+        $data = $request->getParsedBody();
+
+        $forgotPasswordController = new ForgetPasswordController($db);
+        return $forgotPasswordController->forgot(
+            $data['email'],
+            $data['new_password'],
+            $data['confirm_password']
+        );
+    });
+    
 
     $app->get('/logout', function ($request, $response, $args) use ($db) {
         $userController = new UserController($db);
