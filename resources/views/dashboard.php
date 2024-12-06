@@ -18,10 +18,20 @@
     <script>
         const loadPage = window.loadPage;
 
+        window.addEventListener('load', () => {
+            const lastPage = localStorage.getItem('currentPage') || 'home';
+
+            const navLink = document.querySelector(`.navlink .link[href="${lastPage}"]`);
+            if (navLink) {
+                navLink.click();
+            }
+        });
+
         document.querySelectorAll('.navlink .link').forEach(link => {
             link.addEventListener('click', async function(e) {
                 e.preventDefault();
                 const page = this.getAttribute('href');
+                localStorage.setItem('currentPage', page);
                 await window.loadPage(page);
             });
         });
@@ -30,12 +40,14 @@
             if (event.state && event.state.page) {
                 window.loadPage(event.state.page);
             } else {
-                window.loadPage('home');
+                const lastPage = localStorage.getItem('currentPage') || 'home';
+                window.loadPage(lastpage);
             }
         }
 
-        // Load initial content based on URL or default to 'home'
-        window.loadPage('home');
+        // Load last visited page or default to home
+        const initialPage = localStorage.getItem('currentPage') || 'home';
+        window.loadPage(initialPage);
     </script>
 </body>
 
