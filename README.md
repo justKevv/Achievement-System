@@ -8,7 +8,7 @@ A web-based system for managing and tracking student achievements using PHP Slim
 - Composer
 - SQL Server
 - Laragon
-- Web server Nginx
+- Web server Apache
 
 ## Installation
 
