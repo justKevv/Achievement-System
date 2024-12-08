@@ -1,3 +1,14 @@
-RewriteEngine on
+# Root .htaccess
+RewriteEngine On
+
+# Special rule for root URL
+RewriteRule ^$ public/index.php [L]
+
+# Allow direct access to static files
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# Forward non-static requests to public
 RewriteCond %{REQUEST_URI} !^/public/
 RewriteRule ^(.*)$ public/$1 [L]

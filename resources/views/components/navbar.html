@@ -36,17 +36,6 @@
         }
     }
 
-    document.querySelectorAll('.navlink .link').forEach((link) => {
-        link.addEventListener('click', async (event) => {
-            event.preventDefault();
-            updateSelectablePosition(link);
-            localStorage.setItem('lastClickedLink', link.textContent);
-
-            const page = link.getAttribute('href');
-            await window.loadPage(page);
-        });
-    });
-
     window.addEventListener('load', () => {
         const lastClickedLink = localStorage.getItem('lastClickedLink');
         if (lastClickedLink) {
@@ -60,10 +49,4 @@
             }
         }
     });
-
-    window.onpopstate = function(event) {
-        if (event.state && event.state.page) {
-            window.loadPage(event.state.page);
-        }
-    };
 </script>
