@@ -25,6 +25,8 @@
         const selectableDiv = document.querySelector('.selectable');
         const linkLeft = link.offsetLeft;
 
+        console.log("Updating link: ", linkLeft);
+
         selectableDiv.style.left = `${linkLeft}px`;
 
         if (link.textContent === 'Rank') {
@@ -37,7 +39,9 @@
     }
 
     window.addEventListener('load', () => {
+        console.log('Window Loaded');
         const lastClickedLink = localStorage.getItem('lastClickedLink');
+        console.log(lastClickedLink);
         if (lastClickedLink) {
             const link = Array.from(document.querySelectorAll('.navlink .link')).find(link => link.textContent === lastClickedLink);
             if (link) {
