@@ -55,6 +55,7 @@
 .contain {
     height: 74.92px;
     display: flex;
+    padding-bottom: 80px;
 }
 
 .logo-contain {
