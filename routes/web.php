@@ -1,5 +1,8 @@
 <?php
 
+use App\Middleware\AuthMiddleware;
+use App\Middleware\RedirectIfAuthenticated;
+use App\Middleware\RoleMiddleware;
 use Slim\App;
 use App\View;
 use App\ErrorHandler;
@@ -24,13 +27,12 @@ return function (App $app, $db) {
                 $data['password'] ?? '' // Use password field name to match form
             );
         });
+    })->add(new RedirectIfAuthenticated($app->getContainer()));
 
-        $web->get('logout', function ($request, $response, $args) use ($db) {
-            $userController = new UserController($db);
-            return $userController->logout();
-        });
+    $app->get('/logout', function ($request, $response, $args) use ($db) {
+        $userController = new UserController($db);
+        return $userController->logout();
     });
-
 
 
     $app->get('/dashboard[/{page}]', function ($request, $response, $args) {
@@ -56,7 +58,8 @@ return function (App $app, $db) {
         $output = ob_get_clean();
         $response->getBody()->write($output);
         return $response;
-    });
+    })->add(new RoleMiddleware($app->getContainer(), $_SESSION['role_id'] ?? null))
+        ->add(new AuthMiddleware($app->getContainer()));
 
     // Handle 404 Page
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

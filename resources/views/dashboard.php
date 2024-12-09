@@ -18,13 +18,19 @@
     <script>
         const loadPage = window.loadPage;
 
+        async function handlePageLoad(page) {
+            const link = document.querySelector(`.navlink .link[href="${page}"]`);
+            if (link) {
+                // Update navbar before loading page
+                updateSelectablePosition(link);
+                localStorage.setItem('lastClickedLink', link.textContent);
+            }
+            await window.loadPage(page);
+        }
+
         window.addEventListener('load', () => {
             const lastPage = localStorage.getItem('currentPage') || 'home';
-
-            const navLink = document.querySelector(`.navlink .link[href="${lastPage}"]`);
-            if (navLink) {
-                navLink.click();
-            }
+            handlePageLoad(lastPage);
         });
 
         document.querySelectorAll('.navlink .link').forEach(link => {
@@ -32,7 +38,8 @@
                 e.preventDefault();
                 const page = this.getAttribute('href');
                 localStorage.setItem('currentPage', page);
-                await window.loadPage(page);
+                updateSelectablePosition(this); // Add this line
+                await handlePageLoad(page);
             });
         });
 

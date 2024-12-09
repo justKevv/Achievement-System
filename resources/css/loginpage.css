@@ -38,7 +38,7 @@ html, body {
     text-align: center;
     color: white;
     padding: 20px;
-    background-image: url('public/assets/images/pattern.png');
+    background-image: url('/assets/images/pattern.png');
     background-size: cover;
     height: 90vh;
     border-radius: 30px;
