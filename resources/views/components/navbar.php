@@ -7,9 +7,15 @@
         <div class="white-pill"></div>
         <div class="selectable"></div>
         <div class="navlink">
-            <a href="home" class="link">Dashboard</a>
-            <a href="submission" class="link">Submission</a>
-            <a href="rank" class="link">Rank</a>
+            <?php if ($_SESSION['role_id'] === 'A'): ?>
+                <a href="home" class="link">Dashboard</a>
+                <a href="approval" class="link">Approval</a>
+                <a href="user" class="link">User</a>
+            <?php elseif ($_SESSION['role_id'] === 'S'): ?>
+                <a href="home" class="link">Dashboard</a>
+                <a href="submission" class="link">Submission</a>
+                <a href="rank" class="link">Rank</a>
+            <?php endif; ?>
         </div>
     </div>
     <div class="two-icon">
@@ -24,18 +30,27 @@
     function updateSelectablePosition(link) {
         const selectableDiv = document.querySelector('.selectable');
         const linkLeft = link.offsetLeft;
+        const roleId = '<?php echo $_SESSION['role_id'] ?>';
 
         console.log("Updating link: ", linkLeft);
 
         selectableDiv.style.left = `${linkLeft}px`;
 
-        if (link.textContent === 'Rank') {
-            selectableDiv.style.width = '130px';
-        } else if (link.textContent === "Submission" || link.textContent === "Dashboard") {
-            selectableDiv.style.width = '185px';
-        } else {
-            selectableDiv.style.width = '0px';
-        }
+        const widthMap = {
+            'A': { // Admin
+                'Dashboard': '185px',
+                'Approval': '165px',
+                'User': '130px'
+            },
+            'S': { // Student
+                'Dashboard': '185px',
+                'Submission': '185px',
+                'Rank': '130px'
+            }
+        };
+
+        const width = widthMap[roleId]?.[link.textContent] || '0px';
+        selectableDiv.style.width = width;
     }
 
     window.addEventListener('load', () => {
