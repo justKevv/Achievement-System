@@ -1,3 +1,8 @@
+<?php
+
+if ($_SESSION['role_id'] == 'A')
+?>
+
 <link rel="stylesheet" href="/resources/css/adminHome.css">
 <body>
     <div class="home-page">
@@ -9,7 +14,7 @@
                         <p>SARS is a platform for documenting and managing the achievements of students at the State Polytechnic of Malang, specifically in the Information Technology department.</p>
                     </div>
                     <div class="image">
-                        <img src="/public/assets/images/Success factors-amico (1) 1.png" alt="Trophy" style="width: 200px;">
+                        <img src="/assets/images/success.png" alt="Trophy" style="width: 200px;">
                     </div>
                 </section>
                 <section class="stats-section">
