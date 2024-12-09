@@ -9,7 +9,7 @@
 </head>
 
 <body>
-    <?php require_once '../resources/views/components/navbar.html'; ?>
+    <?php require_once '../resources/views/components/navbar.php'; ?>
 
     <div id="content">
         <!-- Initial content can be loaded here if needed -->
