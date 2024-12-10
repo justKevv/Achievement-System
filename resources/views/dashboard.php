@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-    <script src="/resources/js/load-page.js"></script>
+    <script src="/assets/js/load-page.js"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>

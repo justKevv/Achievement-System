@@ -1,5 +1,5 @@
-<link rel="stylesheet" href="resources/css/submission.css">
-<script src="/resources/js/script.js"></script>
+<link rel="stylesheet" href="assets/css/submission.css">
+<script src="/assets/js/script.js"></script>
 
 <body>
   <div class="container">
@@ -24,7 +24,7 @@
           <tr>
             <th>No</th>
             <th>Competition Title</th>
-            <th>Category</th>           
+            <th>Category</th>
             <th>Organizer</th>
             <th>Date</th>
             <th>Status</th>
@@ -122,8 +122,8 @@
                     <p>Clear</p>
                 </div>
                 <input type="text" id="class">
-            </div>    
-        </div>    
+            </div>
+        </div>
         <div class="modal-actions">
           <button id="reset-btn" type="button" onclick="resetFilter()">Reset</button>
           <button id="apply-btn" type="submit">Apply</button>
@@ -133,7 +133,7 @@
   </div>
 
   <!-- Input Achievement Modal -->
-  <div class="achievement-detail" id="detail-modal"> 
+  <div class="achievement-detail" id="detail-modal">
     <div class="achievement-detail-content">
         <div class="header-detail">
             <h3>Input Achievement Data</h3>
@@ -176,7 +176,7 @@
                     <p>Activity Documentation</p>
                     <input type="file" id="activity-documentation" name="activity-documentation">
                     <span>Max size 5Mb</span>
-                </div>                
+                </div>
             </div>
         </div>
         <div class="detail-actions">

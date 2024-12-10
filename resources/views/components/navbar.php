@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/resources/css/navbar.css">
+<link rel="stylesheet" href="/assets/css/navbar.css">
 <div class="contain">
     <div class="logo-contain">
         <img class="logo" src="/assets/images/logo-sars.png" alt="Logo SARS">

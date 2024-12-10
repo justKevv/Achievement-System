@@ -1,5 +1,5 @@
 <?php if ($_SESSION['role_id'] == 'A') : ?>
-    <link rel="stylesheet" href="/resources/css/adminHome.css">
+    <link rel="stylesheet" href="/assets/css/adminHome.css">
     <div class="home-page">
         <div class="content">
             <div class="left-dashboard">
@@ -90,23 +90,29 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($recent as $index => $achievement) : ?>
+                        <?php if (isset($recent) && is_array($recent) && !empty($recent)) : ?>
+                            <?php foreach ($recent as $index => $achievement) : ?>
+                                <tr>
+                                    <td><?php echo $index + 1 ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
+                                    <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
                             <tr>
-                                <td><?php echo $index + 1 ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
-                                <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                <td colspan="6" class="text-center">No data available</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
         </section>
     </div>
 <?php elseif ($_SESSION['role_id'] == 'S') : ?>
-    <link rel="stylesheet" href="/resources/css/s_home.css">
+    <link rel="stylesheet" href="/assets/css/s_home.css">
     <div class="home-page">
         <div class="content">
             <div class="left-dashboard">
@@ -122,15 +128,15 @@
                 </section>
                 <section class="stats-section">
                     <div class="stat-box">
-                        <h2 id="intern">10</h2>
+                        <h2 id="intern"><?php echo $stats['intern'] ?? 0 ?></h2>
                         <p>International Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="national">13</h2>
+                        <h2 id="national"><?php echo $stats['national'] ?? 0 ?></h2>
                         <p>National Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="regional">8</h2>
+                        <h2 id="regional"><?php echo $stats['regional'] ?? 0 ?></h2>
                         <p>Regional Achievement</p>
                     </div>
                 </section>

@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/resources/css/rank.css">
+<link rel="stylesheet" href="/assets/css/rank.css">
 
 <body>
   <div class="container">
@@ -12,7 +12,7 @@
           <tr>
             <th>Rank</th>
             <th>Name</th>
-            <th>NIM</th>           
+            <th>NIM</th>
             <th>Study Program</th>
             <th><img src="../../assets/images/medal.png" alt="medal" width="20px"></th>
           </tr>
