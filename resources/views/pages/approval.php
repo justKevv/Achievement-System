@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="/resources/css/approval.css">
+<link rel="stylesheet" href="/assets/css/approval.css">
 
 <body>
   <div class="container">
