@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\DashboardController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RedirectIfAuthenticated;
 use App\Middleware\RoleMiddleware;
@@ -35,29 +36,9 @@ return function (App $app, $db) {
     });
 
 
-    $app->get('/dashboard[/{page}]', function ($request, $response, $args) {
-        $page = $args['page'] ?? 'home';
-        $filePath = "../resources/views/pages/{$page}.php";
-
-        $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
-
-        if ($isAjax) {
-            if (!file_exists($filePath)) {
-                return $response->withStatus(404)
-                    ->getBody()->write("Page not found");
-            }
-            ob_start();
-            require $filePath;
-            $output = ob_get_clean();
-            $response->getBody()->write($output);
-            return $response;
-        }
-
-        ob_start();
-        View::render('../resources/views/dashboard.php');
-        $output = ob_get_clean();
-        $response->getBody()->write($output);
-        return $response;
+    $app->get('/dashboard[/{page}]', function ($request, $response, $args) use ($db) {
+        $dashboardController = new DashboardController($db);
+        return $dashboardController->index($request, $response, $args);
     })->add(new RoleMiddleware($app->getContainer(), $_SESSION['role_id'] ?? null))
         ->add(new AuthMiddleware($app->getContainer()));
 
