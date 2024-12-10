@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="assets/css/submission.css">
+<link rel="stylesheet" href="/assets/css/submission.css">
 <script src="/assets/js/script.js"></script>
 
 <body>

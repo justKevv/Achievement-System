@@ -19,6 +19,7 @@ class DashboardController extends Controller
     {
         $page = $args['page'] ?? 'home';
         $filePath = "../resources/views/pages/{$page}.php";
+        $data = [];
 
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
@@ -26,6 +27,11 @@ class DashboardController extends Controller
             $data = [
                 'stats' => $this->achievementModel->getAchievementStats(),
                 'recent' => $this->achievementModel->getRecentAchievements(),
+            ];
+        } elseif ($page === 'user') {
+            $users = $this->achievementModel->getAllUsers() ?? [];
+            $data = [
+                'users' => $users,
             ];
         }
 
