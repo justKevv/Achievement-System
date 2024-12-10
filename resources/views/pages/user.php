@@ -1,49 +1,41 @@
-<link rel="stylesheet" href="resources/css/submission.css">
-<script src="/resources/js/script.js"></script>
+<link rel="stylesheet" href="resources/css/user.css">
 
 <body>
   <div class="container">
     <main>
       <div class="content-header">
-        <h2>Achievement Submission</h2>
+        <h2>User</h2>
         <div class="actions">
           <div class="search">
             <input type="text" placeholder="Search">
-            <button class="search-btn"><img src="/assets/icons/search.png" alt="Search"></button>
+            <button class="search-btn"><img src="../../assets/icons/search.png" alt="Search"></button>
           </div>
           <div class="filter" onclick="toggleFilter()">
               <button class="filter-btn" >Filter</button>
-                <img src="/assets/icons/filter.png" alt="Filter">
+                <img src="../../assets/icons/filter.png" alt="Filter">
             </div>
-          <button class="add-btn" onclick="toggleDetail()">+ Add Achievement</button>
+            <button class="add-btn" onclick="toggleDetail()">+ Add User</button>
         </div>
       </div>
 
       <table class="table">
         <thead>
           <tr>
-            <th>No</th>
-            <th>Competition Title</th>
-            <th>Category</th>           
-            <th>Organizer</th>
-            <th>Date</th>
-            <th>Status</th>
+            <th>No</th>           
+            <th>Name</th>
+            <th>Email</th>
+            <th>User Role</th>
             <th>Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td>1</td>
-            <td>TechFest Hackathon 2024</td>
-            <td>International</td>
-            <td>University</td>
-            <td>2024/09/10</td>
+            <td>Alexandra Grace</td>
+            <td>alexandragrace@gmail.com</td>
             <td>
-                <div class="status pending">
-                    <div class="img-status">
-                        <img src="/assets/icons/pending.png" alt="">
-                    </div>
-                    <p>Pending</p>
+                <div class="role admin">
+                    <p>Admin</p>
                 </div>
             </td>
             <td>
@@ -54,23 +46,43 @@
                     <span>.</span>
                 </div>
                 <div class="dropdown">
-                  <div onclick="editRow()"><span><img src="/assets/icons/edit.png" alt=""></span>Edit</div>
-                  <div onclick="deleteRow()"><span><img src="/assets/icons/trash.png" alt=""></span>Delete</div>
+                  <div onclick="toggleDetail()"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>
+                  <div onclick="deleteRow()"><span><img src="../../assets/icons/trash.png" alt=""></span>Delete</div>
                 </div>
               </div>
             </td>
           </tr>
           <tr>
             <td>2</td>
-            <td>TechFest Hackathon 2024</td>
-            <td>International</td>
-            <td>University</td>
-            <td>2024/09/10</td>
+            <td>Alexandra Grace</td>
+            <td>alexandragrace@gmail.com</td>
             <td>
-                <div class="status rejected">
-                    <span class="img-status"><img src="/assets/icons/reject.png" alt=""></span>
-                    <p>Rejected</p>
+                <div class="role student">
+                    <p>Student</p>
                 </div>
+            </td>
+            <td>
+              <div class="action-menu">
+                <div class="btn-actions" onclick="toggleActionMenu(this)">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+                <div class="dropdown">
+                  <div onclick="editRow()"><span><img src="img/edit-2.png" alt=""></span>Edit</div>
+                  <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Alexandra Grace</td>
+            <td>alexandragrace@gmail.com</td>
+            <td>
+              <div class="role chairman">
+                  <p>Chairman</p>
+              </div>
             </td>
             <td>
               <div class="action-menu">
@@ -132,51 +144,80 @@
     </div>
   </div>
 
-  <!-- Input Achievement Modal -->
+  <!-- Add User Student Modal -->
   <div class="achievement-detail" id="detail-modal"> 
     <div class="achievement-detail-content">
         <div class="header-detail">
-            <h3>Input Achievement Data</h3>
+            <h3>Add Student</h3>
             <button class="close-btn" onclick="toggleDetail()">✖</button>
         </div>
         <div class="detail-content">
+            <div class="profile-section">
+                <div class="profile-picture">
+                  <img src="../../assets/images/avatar.png" alt="Profile Picture" id="profile-preview" />
+                  <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)" />
+                </div>
+            </div>              
             <div class="right-detail">
                 <div class="detail">
-                    <p>Competition Title</p>
+                    <p>NIM</p>
                     <input type="text" value="">
                 </div>
                 <div class="detail">
-                    <p>Description</p>
+                    <p>Name</p>
                     <input type="text" value="">
                 </div>
                 <div class="detail">
-                  <p>Category</p>
+                  <p>Study Program</p>
                   <select>
-                    <option value="regional">Regional</option>
-                    <option value="national">National</option>
-                    <option value="international">International</option>
+                    <option value="regional">D4 Informatics Engineering</option>
+                    <option value="national">D4 Business Information System</option>
+                    <option value="international">D2 Site Software Development</option>
                 </select>
               </div>
                 <div class="detail">
-                    <p>Date</p>
+                    <p>Class</p>
+                    <input type="text" value="">
+                </div>
+                <div class="detail">
+                    <p>Date of Birth</p>
                     <input type="date" value="">
                 </div>
             </div>
             <div class="left-detail">
                 <div class="detail">
-                    <p>Organizer</p>
+                    <p>Address</p>
                     <input type="text" value="">
                 </div>
                 <div class="detail">
-                    <p>Certificate</p>
-                    <input type="file" id="certificate" name="certificate">
-                    <span>Max size 5Mb</span>
+                    <p>Enrollment Date</p>
+                    <input type="date" value="">
                 </div>
                 <div class="detail">
-                    <p>Activity Documentation</p>
-                    <input type="file" id="activity-documentation" name="activity-documentation">
-                    <span>Max size 5Mb</span>
-                </div>                
+                    <p>Phone Number</p>
+                    <input type="text" value="">
+                </div>
+                <div class="detail">
+                    <p>Gender</p>
+                    <input type="text" value="">
+                </div>
+            </div>
+        </div>
+        <!-- Divider Line -->
+        <hr class="divider">
+        <!-- Email and Password Section -->
+        <div class="detail-content">
+            <div class="left-detail-bottom">
+            <div class="input-field">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email">
+            </div>
+            </div>
+            <div class="right-detail-bottom">
+            <div class="input-field">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password">
+            </div>
             </div>
         </div>
         <div class="detail-actions">
@@ -184,4 +225,6 @@
         </div>
     </div>
 </div>
+
+  <script src="script.js"></script>
 </body>
