@@ -1,4 +1,4 @@
-<link rel="stylesheet" href="resources/css/user.css">
+<link rel="stylesheet" href="assets/css/user.css">
 
 <body>
   <div class="container">
@@ -21,7 +21,7 @@
       <table class="table">
         <thead>
           <tr>
-            <th>No</th>           
+            <th>No</th>
             <th>Name</th>
             <th>Email</th>
             <th>User Role</th>
@@ -134,8 +134,8 @@
                     <p>Clear</p>
                 </div>
                 <input type="text" id="class">
-            </div>    
-        </div>    
+            </div>
+        </div>
         <div class="modal-actions">
           <button id="reset-btn" type="button" onclick="resetFilter()">Reset</button>
           <button id="apply-btn" type="submit">Apply</button>
@@ -145,7 +145,7 @@
   </div>
 
   <!-- Add User Student Modal -->
-  <div class="achievement-detail" id="detail-modal"> 
+  <div class="achievement-detail" id="detail-modal">
     <div class="achievement-detail-content">
         <div class="header-detail">
             <h3>Add Student</h3>
@@ -157,7 +157,7 @@
                   <img src="../../assets/images/avatar.png" alt="Profile Picture" id="profile-preview" />
                   <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)" />
                 </div>
-            </div>              
+            </div>
             <div class="right-detail">
                 <div class="detail">
                     <p>NIM</p>

@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile</title>
-    <link rel="stylesheet" href="/resources/css/profile.css">
+    <link rel="stylesheet" href="/assets/css/profile.css">
 
 </head>
 
@@ -13,7 +13,7 @@
     <div class="container">
 
         <?php require_once '../resources/views/components/navbar.html'; ?>
-        
+
         <main>
             <div class="content-header-profile">
                 <h2>Profile</h2>

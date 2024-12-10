@@ -1,5 +1,5 @@
 <?php if ($_SESSION['role_id'] == 'A') : ?>
-    <link rel="stylesheet" href="/resources/css/adminHome.css">
+    <link rel="stylesheet" href="/assets/css/adminHome.css">
     <div class="home-page">
         <div class="content">
             <div class="left-dashboard">
@@ -112,7 +112,7 @@
         </section>
     </div>
 <?php elseif ($_SESSION['role_id'] == 'S') : ?>
-    <link rel="stylesheet" href="/resources/css/s_home.css">
+    <link rel="stylesheet" href="/assets/css/s_home.css">
     <div class="home-page">
         <div class="content">
             <div class="left-dashboard">
@@ -128,15 +128,15 @@
                 </section>
                 <section class="stats-section">
                     <div class="stat-box">
-                        <h2 id="intern">10</h2>
+                        <h2 id="intern"><?php echo $stats['intern'] ?? 0 ?></h2>
                         <p>International Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="national">13</h2>
+                        <h2 id="national"><?php echo $stats['national'] ?? 0 ?></h2>
                         <p>National Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="regional">8</h2>
+                        <h2 id="regional"><?php echo $stats['regional'] ?? 0 ?></h2>
                         <p>Regional Achievement</p>
                     </div>
                 </section>
