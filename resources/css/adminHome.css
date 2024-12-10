@@ -42,11 +42,11 @@ body {
   gap: 80px;
 }
 .stat-box {
-    max-width: 286px;
+  max-width: 286px;
   text-align: center;
   background-color: #fff;
   padding: 10px 60px;
-  border-radius: 10px;
+  border-radius: 25px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   flex: 1;
 }
@@ -73,13 +73,13 @@ body {
 }
 .right-dashboard{
    width: 25%;
-   padding: 0 20px 0 0px;
+   padding: 0 70px 0 0px;
 }
 /* Tables */
 .tables {
   display: flex;
   justify-content: space-between;
-  margin: 20px 30px 20px 90px;
+  margin: 0px 80px 20px 90px;
 }
 table {
   width: 100%;
@@ -105,21 +105,21 @@ th {
 }
 .rankings h2{
     text-align: center;
-    padding: 10px 40px;
+    padding: 20px 40px 0px;
     margin-top: 10px;
     font-weight: 400;
     font-size: 28px;
 }
 .rankings{
     background-color: #fff;
-    border-radius: 10px;
+    border-radius: 25px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     flex: 1;
     margin: 20px 20px 40px 30px;
 }
 .recent-achievements{
   background-color: #fff;
-  border-radius: 10px;
+  border-radius: 25px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   flex: 1;
   margin: 0 10px;
@@ -145,8 +145,5 @@ th {
     color: #2D7F6A;
 }
 #regional{
-    color: #F5A623;
-}
-#active{
-    background-color: #f5a623;
+    color: #FFCD44;
 }

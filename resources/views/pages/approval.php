@@ -1,11 +1,10 @@
-<link rel="stylesheet" href="resources/css/submission.css">
-<script src="/resources/js/script.js"></script>
+<link rel="stylesheet" href="/resources/css/approval.css">
 
 <body>
   <div class="container">
     <main>
       <div class="content-header">
-        <h2>Achievement Submission</h2>
+        <h2>Achievement Verification</h2>
         <div class="actions">
           <div class="search">
             <input type="text" placeholder="Search">
@@ -15,17 +14,16 @@
               <button class="filter-btn" >Filter</button>
                 <img src="/assets/icons/filter.png" alt="Filter">
             </div>
-          <button class="add-btn" onclick="toggleDetail()">+ Add Achievement</button>
         </div>
       </div>
 
       <table class="table">
         <thead>
           <tr>
-            <th>No</th>
+            <th>No</th>           
+            <th>Name</th>
             <th>Competition Title</th>
-            <th>Category</th>           
-            <th>Organizer</th>
+            <th>Category</th>
             <th>Date</th>
             <th>Status</th>
             <th>Action</th>
@@ -34,14 +32,14 @@
         <tbody>
           <tr>
             <td>1</td>
+            <td>Alexandra Grace</td>
             <td>TechFest Hackathon 2024</td>
             <td>International</td>
-            <td>University</td>
             <td>2024/09/10</td>
             <td>
                 <div class="status pending">
                     <div class="img-status">
-                        <img src="/assets/icons/pending.png" alt="">
+                        <img src="../../assets/icons/pending.png" alt="">
                     </div>
                     <p>Pending</p>
                 </div>
@@ -54,7 +52,7 @@
                     <span>.</span>
                 </div>
                 <div class="dropdown">
-                  <div onclick="editRow()"><span><img src="/assets/icons/edit.png" alt=""></span>Edit</div>
+                  <div onclick="toggleDetail()"><span><img src="/assets/icons/edit.png" alt=""></span>Edit</div>
                   <div onclick="deleteRow()"><span><img src="/assets/icons/trash.png" alt=""></span>Delete</div>
                 </div>
               </div>
@@ -62,9 +60,9 @@
           </tr>
           <tr>
             <td>2</td>
+            <td>Alexandra Grace</td>
             <td>TechFest Hackathon 2024</td>
             <td>International</td>
-            <td>University</td>
             <td>2024/09/10</td>
             <td>
                 <div class="status rejected">
@@ -80,7 +78,33 @@
                     <span>.</span>
                 </div>
                 <div class="dropdown">
-                  <div onclick="editRow()"><span><img src="img/edit-2.png" alt=""></span>Edit</div>
+                  <div onclick="editRow()"><span><img src="img/edit.png" alt=""></span>Edit</div>
+                  <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
+                </div>
+              </div>
+            </td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td>Alexandra Grace</td>
+            <td>TechFest Hackathon 2024</td>
+            <td>International</td>
+            <td>2024/09/10</td>
+            <td>
+              <div class="status approve">
+                  <div class="img-status"><img src="/assets/icons/approve.png" alt=""></div>
+                  <p>Approve</p>
+              </div>
+            </td>
+            <td>
+              <div class="action-menu">
+                <div class="btn-actions" onclick="toggleActionMenu(this)">
+                    <span>.</span>
+                    <span>.</span>
+                    <span>.</span>
+                </div>
+                <div class="dropdown">
+                  <div onclick="editRow()"><span><img src="img/edit.png" alt=""></span>Edit</div>
                   <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
                 </div>
               </div>
@@ -136,52 +160,49 @@
   <div class="achievement-detail" id="detail-modal"> 
     <div class="achievement-detail-content">
         <div class="header-detail">
-            <h3>Input Achievement Data</h3>
+            <h3>Achievement Verification</h3>
             <button class="close-btn" onclick="toggleDetail()">✖</button>
         </div>
         <div class="detail-content">
-            <div class="right-detail">
-                <div class="detail">
-                    <p>Competition Title</p>
-                    <input type="text" value="">
-                </div>
-                <div class="detail">
-                    <p>Description</p>
-                    <input type="text" value="">
-                </div>
-                <div class="detail">
-                  <p>Category</p>
-                  <select>
-                    <option value="regional">Regional</option>
-                    <option value="national">National</option>
-                    <option value="international">International</option>
-                </select>
+          <div class="right-detail">
+              <div class="detail">
+                  <p>Competition Title</p>
+                  <p>TechFest Hackathon 2024</p>
               </div>
-                <div class="detail">
-                    <p>Date</p>
-                    <input type="date" value="">
-                </div>
-            </div>
-            <div class="left-detail">
-                <div class="detail">
-                    <p>Organizer</p>
-                    <input type="text" value="">
-                </div>
-                <div class="detail">
-                    <p>Certificate</p>
-                    <input type="file" id="certificate" name="certificate">
-                    <span>Max size 5Mb</span>
-                </div>
-                <div class="detail">
-                    <p>Activity Documentation</p>
-                    <input type="file" id="activity-documentation" name="activity-documentation">
-                    <span>Max size 5Mb</span>
-                </div>                
-            </div>
-        </div>
+              <div class="detail">
+                  <p>Description</p>
+                  <p>1st Place in App Development Competition</p>
+              </div>
+              <div class="detail">
+                  <p>Category</p>
+                  <p>International</p>
+              </div>
+              <div class="detail">
+                  <p>Date</p>
+                  <p>2024/09/10</p>
+              </div>
+          </div>
+          <div class="left-detail">
+              <div class="detail">
+                  <p>Organizer</p>
+                  <p>International</p>
+              </div>
+              <div class="detail">
+                  <p>Certificate</p>
+                  <img src="/assets/images/sertif.png" alt="">
+              </div>
+              <div class="detail">
+                  <p>Activity Documentation</p>
+                  <img src="/assets/images/sertif.png" alt="">
+              </div>
+          </div>
+      </div>
         <div class="detail-actions">
-            <button id="submit">Submit</button>
+          <button id="reject">Reject</button>
+          <button id="approve">Approve</button>
         </div>
     </div>
 </div>
+
+  <script src="/resources/js/script.js"></script>
 </body>
