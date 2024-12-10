@@ -1,0 +1,111 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;700&display=swap');
+
+body {
+    font-family: 'Outfit', sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f8f9fa;
+  }
+
+  .container {
+    width: 95%;
+    margin: 0 auto;
+  }
+
+  main{
+      background-color: #fff;
+      border-radius: 20px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      margin: 25px 40px 40px 40px;
+  }
+  .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0px 40px;
+  }
+  .content-header .actions {
+      display: flex;
+      gap: 20px;
+  }
+  
+  .nav-btn {
+  background: none;
+  border: none;
+  margin: 0 10px;
+  padding: 5px 10px;
+  cursor: pointer;
+  }
+
+  .nav-btn.active {
+  font-weight: bold;
+  color: #FFCD44;
+  }
+
+  /* Table Styles */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 0px;
+  }
+  th{
+      font-weight: 500;
+  }
+  th, td {
+    border-top: 1px solid #ddd;
+    padding: 0px;
+    text-align: center;
+  }
+  
+  th {
+    color: black;
+    padding: 15px;
+  }
+  #status{
+      padding: 15px 0px !important;
+  }
+  .avt-name{
+    padding: 0px 0;
+    margin: 5px auto;
+    border-radius: 25px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .avt-name .img-status{
+      display: flex;
+      align-items: center;
+      margin-right: 10px;
+  }
+  .avt-name p{
+      line-height: 10px;
+      font-size: 16px;
+  }
+
+  /* Pagination */
+  .pagination {
+      font-family: Outfit;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      padding: 20px 40px;
+      border-top: 1px solid #ddd;
+  }
+  .pagination .btn-pagination {
+      font-family: Outfit;
+      background-color: white;
+      color: #767676;
+      border: none;
+      cursor: pointer;
+      padding: 5px 10px;
+  }
+  .active{
+    font-family: Outfit;
+    background-color: #42548C;
+    border: none;
+    cursor: pointer;
+    padding: 5px 9.5px;
+    color: white;
+    border-radius: 50%;
+}
