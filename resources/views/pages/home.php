@@ -90,16 +90,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php foreach ($recent as $index => $achievement) : ?>
+                        <?php if (isset($recent) && is_array($recent) && !empty($recent)) : ?>
+                            <?php foreach ($recent as $index => $achievement) : ?>
+                                <tr>
+                                    <td><?php echo $index + 1 ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
+                                    <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
                             <tr>
-                                <td><?php echo $index + 1 ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
-                                <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
-                                <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                <td colspan="6" class="text-center">No data available</td>
                             </tr>
-                        <?php endforeach; ?>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
