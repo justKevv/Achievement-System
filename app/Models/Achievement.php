@@ -47,24 +47,20 @@ class Achievement extends Model
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function getAllUsers() {
+    public function getAllUsers()
+    {
         $sql = "SELECT
-    *
-FROM
-    dbo.admin -- Get all the users name, email, and user role display name
-SELECT
     u.user_id,
-    CASE
-        WHEN r.role_id = 'S' THEN s.student_name
-        WHEN r.role_id = 'A' THEN l.admin_name
-    END as name,
-    u.user_email,
+    COALESCE(s.student_name, a.admin_name) as name,
+    u.user_email as user_email,
     r.role_name
 FROM
     dbo.users u
     JOIN dbo.roles r ON u.role_id = r.role_id
     LEFT JOIN dbo.student s ON u.user_id = s.user_id
-    LEFT JOIN dbo.admin l ON u.user_id = l.user_id;";
+    LEFT JOIN dbo.admin a ON u.user_id = a.user_id
+ORDER BY
+    u.user_id DESC";
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
