@@ -8,6 +8,7 @@ use Slim\App;
 use App\View;
 use App\ErrorHandler;
 
+use App\Controller\ForgetPasswordController;
 use App\Controller\UserController;
 
 return function (App $app, $db) {
@@ -29,7 +30,7 @@ return function (App $app, $db) {
             );
         });
     })->add(new RedirectIfAuthenticated($app->getContainer()));
-
+    
     $app->get('/logout', function ($request, $response, $args) use ($db) {
         $userController = new UserController($db);
         return $userController->logout();
