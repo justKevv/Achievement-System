@@ -30,21 +30,6 @@ return function (App $app, $db) {
             );
         });
     })->add(new RedirectIfAuthenticated($app->getContainer()));
-
-    $app->get('/forget-password', function($request, $response, $args) {
-        View::render('../resources/views/forget-password.html');
-    });
-
-    $app->post('/forget-password', function($request, $response, $args) use ($db) {
-        $data = $request->getParsedBody();
-
-        $forgotPasswordController = new ForgetPasswordController($db);
-        return $forgotPasswordController->forgot(
-            $data['email'],
-            $data['new_password'],
-            $data['confirm_password']
-        );
-    });
     
     $app->get('/logout', function ($request, $response, $args) use ($db) {
         $userController = new UserController($db);
