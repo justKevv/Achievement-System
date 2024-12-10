@@ -9,7 +9,7 @@
 
 <body>
     <?php
-    require_once '../resources/views/components/navbar.html';
+    require_once '../resources/views/components/navbar.php';
     ?>
     <div id="content">
         <h1>Welcome</h1>
