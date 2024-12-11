@@ -3,7 +3,7 @@
     <div class="logo-contain">
         <img class="logo" src="/assets/images/logo-sars.png" alt="Logo SARS">
     </div>
-    <div class="navbar">
+    <div class="navbar" data-role="<?php echo $_SESSION['role_id'] ?? ''; ?>">
         <div class="white-pill <?php echo isset($_SESSION['role_id']) ? match ($_SESSION['role_id']) {
                                     'A' => 'admin-pill',
                                     'S' => 'student-pill',
@@ -57,7 +57,7 @@
             },
             'C': {
                 'Dashboard': '185px',
-                'Student': '155px',
+                'Student': '160px',
             }
         };
 

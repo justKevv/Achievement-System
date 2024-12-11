@@ -38,7 +38,11 @@
                         <?php foreach ($users as $user): ?>
                             <tr>
                                 <td><?php echo $i++ ?></td>
-                                <td><?php echo $user['name'] ?></td>
+                                <td><?php
+                                    $name = isset($user['name']) ? $user['name'] : (isset($user['chairman_name']) ? $user['chairman_name'] : (isset($user['admin_name']) ? $user['admin_name'] : (isset($user['student_name']) ? $user['student_name'] : '')));
+
+                                    echo strlen($name) > 30 ? substr($name, 0, 27) . '...' : $name;
+                                    ?></td>
                                 <td><?php echo $user['user_email'] ?></td>
                                 <td>
                                     <div class="role <?php echo strtolower($user['role_name']) ?>">
@@ -53,8 +57,8 @@
                                             <span>.</span>
                                         </div>
                                         <div class="dropdown">
-                                            <div onclick="toggleDetail(<?php echo $user['id'] ?>)"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>
-                                            <div onclick="deleteRow(<?php echo $user['id'] ?>)"><span><img src="../../assets/icons/trash.png" alt=""></span>Delete</div>
+                                            <div onclick="toggleDetail(<?php echo $user['user_id'] ?>)"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>
+                                            <div onclick="deleteRow(<?php echo $user['user_id'] ?>)"><span><img src="../../assets/icons/trash.png" alt=""></span>Delete</div>
                                         </div>
                                     </div>
                                 </td>
@@ -123,6 +127,7 @@
                             <option value="">Select Role</option>
                             <option value="student">Student</option>
                             <option value="admin">Admin</option>
+                            <option value="chairman">Chairman</option>
                         </select>
                         <button class="close-btn" onclick="window.toggleDetail()">&times;</button>
                     </div>
@@ -137,7 +142,7 @@
                                     <img src="../../assets/images/avatar.png" alt="Profile Picture" id="profile-preview" />
                                     <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)" />
                                 </div>
-                            </div>   
+                            </div>
                             <div class="right-detail">
                                 <div class="detail">
                                     <p>NIM</p>
@@ -201,6 +206,24 @@
                                 <div class="detail">
                                     <p>NIP</p>
                                     <input type="text" id="admin-nip" name="admin_nip" placeholder="Enter NIP">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chairman Fields -->
+                    <div id="chairman-fields" style="display: none">
+                        <div class="detail-content">
+                            <div class="right-detail-admin">
+                                <div class="detail">
+                                    <p>Chairman Name</p>
+                                    <input type="text" id="chairman-name" name="chairman_name" placeholder="Enter chairman name">
+                                </div>
+                            </div>
+                            <div class="left-detail-chairman">
+                                <div class="detail">
+                                    <p>NIP</p>
+                                    <input type="text" id="chairman-nip" name="chairman_nip" placeholder="Enter NIP">
                                 </div>
                             </div>
                         </div>

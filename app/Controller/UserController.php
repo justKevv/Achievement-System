@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Controller\Controller;
 use App\Models\Admin;
+use App\Models\Chairman;
 use App\Models\Student;
 use App\Models\User;
 
@@ -57,7 +58,11 @@ class UserController extends Controller
             $userData = [
                 'user_email' => $data['email'] ?? '',
                 'user_password' => strtoupper(hash('sha256', $data['password'] ?? '')),
-                'role_id' => $data['role'] === 'student' ? 'S' : 'A'
+                'role_id' => match ($data['role']) {
+                    'student' => 'S',
+                    'admin' => 'A',
+                    'chairman' => 'C'
+                }
             ];
 
             $userId = $this->userModel->save('users', $userData);
@@ -85,7 +90,7 @@ class UserController extends Controller
                 if (!$studentModel->save('student', $studentData)) {
                     throw new \Exception('Failed to create student record');
                 }
-            } else {
+            } else if ($data['role'] === 'admin') {
                 $adminModel = new Admin($this->db);
                 $adminData = [
                     'user_id' => $userId,
@@ -96,6 +101,22 @@ class UserController extends Controller
                 if (!$adminModel->save('admin', $adminData)) {
                     throw new \Exception('Failed to create admin record');
                 }
+            } else if ($data['role'] === 'chairman') {
+                $chairmanModel = new Chairman($this->db);
+                $chairmanData = [
+                    'user_id' => $userId,
+                    'chairman_name' => $data['chairman_name'] ?? '',
+                    'chairman_nip' => $data['chairman_nip'] ?? ''
+                ];
+
+                error_log('Chairman data: ' . print_r($chairmanData, true));
+
+                if (!$chairmanModel->save('chairman', $chairmanData)) {
+                    error_log('Failed to create chairman record');
+                    throw new \Exception('Failed to create chairman record');
+                }
+            } else {
+                throw new \Exception('Invalid role');
             }
 
             $response->getBody()->write(json_encode(['success' => true]));
