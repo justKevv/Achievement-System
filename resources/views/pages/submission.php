@@ -80,8 +80,8 @@
                     <span>.</span>
                 </div>
                 <div class="dropdown">
-                  <div onclick="editRow()"><span><img src="img/edit-2.png" alt=""></span>Edit</div>
-                  <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
+                  <div onclick="editRow()"><span><img src="/assets/icons/edit.png" alt=""></span>Edit</div>
+                  <div onclick="deleteRow()"><span><img src="/assets/icons/trash.png" alt=""></span>Delete</div>
                 </div>
               </div>
             </td>
