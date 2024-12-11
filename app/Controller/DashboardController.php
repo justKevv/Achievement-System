@@ -29,24 +29,40 @@ class DashboardController extends Controller
 
         $isAjax = !empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
-        if ($_SESSION['role_id'] == 'A') {
-            if ($page === 'home') {
-                $data = [
-                    'stats' => $this->achievementModel->getAchievementStats(),
-                    'recent' => $this->achievementModel->getRecentAchievements(),
-                ];
-            } elseif ($page === 'user') {
-                $users = $this->achievementModel->getAllUsers() ?? [];
-                $data = [
-                    'users' => $users,
-                ];
-            }
-        } elseif ($_SESSION['role_id'] == 'S') {
-            $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
+        switch ($_SESSION['role_id']) {
+            case 'A':
+                if ($page === 'home') {
+                    $data = [
+                        'stats' => $this->achievementModel->getAchievementStats(),
+                        'recent' => $this->achievementModel->getRecentAchievements(),
+                    ];
+                } elseif ($page === 'user') {
+                    $users = $this->achievementModel->getAllUsers() ?? [];
+                    $data = [
+                        'users' => $users,
+                    ];
+                }
+                break;
 
-            $data = [
-                'student' => $mahasiswa,
-            ];
+            case 'S':
+                $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
+                $recentStudent = $this->studentModel->getRecentTop3Achievement($_SESSION['user_id']) ?? [];
+                $total = $this->studentModel->getTotalAchievement($_SESSION['user_id']) ?? [];
+                $currentRank = $this->studentModel->getCurrentRank($_SESSION['user_id']) ?? [];
+                $rank = $this->studentModel->getRank(3);
+
+                $data = [
+                    'student' => $mahasiswa,
+                    'recentStudent' => $recentStudent,
+                    'total' => $total,
+                    'currentRank' => $currentRank,
+                    'ranking' => $rank
+                ];
+                break;
+
+            default:
+                $data = [];
+                break;
         }
 
         if ($isAjax) {

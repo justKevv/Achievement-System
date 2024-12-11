@@ -93,27 +93,155 @@ class Student extends Model
     }
 
     public function findByUserId($userId)
-{
-    try {
-        $query = "SELECT s.*, u.user_email
+    {
+        try {
+            $query = "SELECT s.*, u.user_email
                  FROM dbo.student s
                  INNER JOIN users u ON s.user_id = u.user_id
                  WHERE s.user_id = :user_id";
 
-        $params = [':user_id' => $userId];
+            $params = [':user_id' => $userId];
 
-        $result = $this->db->prepareAndExecute($query, $params);
+            $result = $this->db->prepareAndExecute($query, $params);
 
-        if ($result) {
-            return $result->fetch(PDO::FETCH_ASSOC);
+            if ($result) {
+                return $result->fetch(PDO::FETCH_ASSOC);
+            }
+
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error finding student by user_id: " . $e->getMessage());
+            throw $e;
         }
-
-        return null;
-    } catch (\PDOException $e) {
-        error_log("Error finding student by user_id: " . $e->getMessage());
-        throw $e;
     }
-}
+
+    public function getRecentTop3Achievement($userId)
+    {
+        try {
+            $query = "SELECT TOP 3
+                    a.achievement_title,
+                    a.achievement_category,
+                    a.achievement_organizer,
+                    a.achievement_date
+                FROM dbo.achievements a
+                WHERE a.user_id = :user_id
+                ORDER BY a.achievement_date DESC";
+
+            $params = [':user_id' => $userId];
+            $result = $this->db->prepareAndExecute($query, $params);
+
+            if ($result) {
+                return $result->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting recent top 3 student achievement: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getAchievement($user_id)
+    {
+        try {
+            $query = "SELECT * FROM dbo.achievment WHERE user_id = :user_id";
+            $params = [':user_id' => $user_id];
+
+            $result = $this->db->prepareAndExecute($query, $params);
+
+            if ($result) {
+                return $result->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting student achievment: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getTotalAchievement($user_id)
+    {
+        try {
+            $query = "SELECT COUNT(achievement_id) as total FROM dbo.achievements WHERE user_id = :user_id";
+            $params = [':user_id' => $user_id];
+
+            $result = $this->db->prepareAndExecute($query, $params);
+
+            if ($result) {
+                return $result->fetch(PDO::FETCH_ASSOC);
+            }
+
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting sum student achievment: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getRank($limit)
+    {
+        try {
+            $limit = (int)$limit;
+
+            $query = "WITH RankedStudents AS (
+                SELECT
+                    s.student_name,
+                    COUNT(a.achievement_id) as total_achievements,
+                    ROW_NUMBER() OVER (ORDER BY COUNT(a.achievement_id) DESC) as rank
+                FROM dbo.student s
+                LEFT JOIN dbo.achievements a ON s.user_id = a.user_id
+                GROUP BY s.student_name
+            )
+            SELECT TOP {$limit}
+                rank,
+                student_name,
+                total_achievements
+            FROM RankedStudents
+            ORDER BY rank ASC";
+
+            $result = $this->db->query($query);
+
+            if ($result) {
+                return $result->fetchAll(PDO::FETCH_ASSOC);
+            }
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting rank list: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function getCurrentRank($user_id)
+    {
+        try {
+            $query = "WITH RankedStudents AS (
+                SELECT
+                    s.user_id,
+                    s.student_name,
+                    COUNT(a.achievement_id) as total_achievements,
+                    ROW_NUMBER() OVER (ORDER BY COUNT(a.achievement_id) DESC) as rank
+                FROM dbo.student s
+                LEFT JOIN dbo.achievements a ON s.user_id = a.user_id
+                GROUP BY s.user_id, s.student_name
+            )
+            SELECT rank, total_achievements
+            FROM RankedStudents
+            WHERE user_id = :user_id";
+
+            $params = [':user_id' => $user_id];
+            $result = $this->db->prepareAndExecute($query, $params);
+
+            if ($result) {
+                return $result->fetch(PDO::FETCH_ASSOC);
+            }
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting current rank: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
 
     private function bindStudentParams($stmt, $data)
     {

@@ -147,7 +147,6 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Name</th>
                                     <th>Competition Title</th>
                                     <th>Category</th>
                                     <th>Organizer</th>
@@ -155,30 +154,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>Alexandra Grace</td>
-                                    <td>TechFest Hackathon 2024</td>
-                                    <td>International</td>
-                                    <td>International</td>
-                                    <td>2024/09/10</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>Alexandra Grace</td>
-                                    <td>TechFest Hackathon 2024</td>
-                                    <td>International</td>
-                                    <td>International</td>
-                                    <td>2024/09/10</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>Alexandra Grace</td>
-                                    <td>TechFest Hackathon 2024</td>
-                                    <td>International</td>
-                                    <td>International</td>
-                                    <td>2024/09/10</td>
-                                </tr>
+                                <?php if (isset($recentStudent) && is_array($recentStudent) && !empty($recentStudent)) : ?>
+                                    <?php foreach ($recentStudent as $index => $achievement) : ?>
+                                        <tr>
+                                            <td><?php echo $index + 1 ?? '-' ?></td>
+                                            <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
+                                            <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
+                                            <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
+                                            <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                        </tr>
+                                    <?php endforeach; ?>
+                                <?php else : ?>
+                                    <tr>
+                                        <td colspan="5" class="text-center">No data available</td>
+                                    </tr>
+                                <?php endif; ?>
                             </tbody>
                         </table>
                     </div>
@@ -192,11 +182,11 @@
                     <div class="stats">
                         <div class="detail-stats1">
                             <p>Achievement</p>
-                            <p>1</p>
+                            <p><?php echo $total['total'] ?></p>
                         </div>
                         <div class="detail-stats">
                             <p>Current Rank</p>
-                            <p>7</p>
+                            <p><?php echo $currRank = ($currentRank['total_achievements'] > 0) ? $currentRank['rank'] : "-"; ?></p>
                         </div>
                     </div>
                     <a href="/profile"><button>My Profile</button></a>
@@ -212,21 +202,21 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Alexandra Grace</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
+                            <?php if (isset($ranking) && is_array($ranking) && !empty($ranking)) : ?>
+                                <?php foreach ($ranking as $rank) : ?>
+                                    <?php if (isset($rank['total_achievements']) && $rank['total_achievements'] > 0) : ?>
+                                        <tr>
+                                            <td><?php echo $rank['rank']; ?></td>
+                                            <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
+                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">No data available</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
