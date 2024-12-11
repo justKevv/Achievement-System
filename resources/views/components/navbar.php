@@ -4,7 +4,12 @@
         <img class="logo" src="/assets/images/logo-sars.png" alt="Logo SARS">
     </div>
     <div class="navbar">
-        <div class="white-pill"></div>
+        <div class="white-pill <?php echo isset($_SESSION['role_id']) ? match ($_SESSION['role_id']) {
+                                    'A' => 'admin-pill',
+                                    'S' => 'student-pill',
+                                    'C' => 'chairman-pill',
+                                    default => ''
+                                } : ''; ?>"></div>
         <div class="selectable"></div>
         <div class="navlink">
             <?php if ($_SESSION['role_id'] === 'A'): ?>
@@ -15,6 +20,9 @@
                 <a href="home" class="link">Dashboard</a>
                 <a href="submission" class="link">Submission</a>
                 <a href="rank" class="link">Rank</a>
+            <?php elseif ($_SESSION['role_id'] === 'C'): ?>
+                <a href="home" class="link">Dashboard</a>
+                <a href="studentdata" class="link">Student</a>
             <?php endif; ?>
         </div>
     </div>
@@ -46,6 +54,10 @@
                 'Dashboard': '185px',
                 'Submission': '185px',
                 'Rank': '130px'
+            },
+            'C': {
+                'Dashboard': '185px',
+                'Student': '155px',
             }
         };
 
