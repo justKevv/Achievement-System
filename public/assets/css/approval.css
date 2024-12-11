@@ -104,9 +104,7 @@ body {
     color: black;
     padding: 15px;
   }
-  #status{
-      padding: 15px 0px !important;
-  }
+
   .status {
     padding: 0px 0;
     margin: 5px auto;
@@ -154,8 +152,8 @@ body {
 
   .filter-content {
       position: absolute;
-      left: 58%;
-      top: 30%;
+      left: 70%;
+      top: 32%;
       height: 319px;
       width: 355px;
       background: white;
