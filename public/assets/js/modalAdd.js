@@ -25,6 +25,16 @@ window.resetFilter = function () {
     if (studyProgram) studyProgram.value = '';
     if (classInput) classInput.value = '';
 };
+window.resetFilterApproval = function () {
+    const categoryInput = document.getElementById('category');
+    const statusInput = document.getElementById('status');
+    if (categoryInput) categoryInput.value = '';
+    if (statusInput) statusInput.value = '';
+};
+window.resetFilterUser = function () {
+    const userInput = document.getElementById('user-role');
+    if (userInput) userInput.value = '';
+};
 
 
 // Form handling
