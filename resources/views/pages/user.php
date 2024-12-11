@@ -95,21 +95,14 @@
                 <div class="form-input">
                     <div class="input-field">
                         <div class="label">
-                            <label for="study-program">Study Program</label>
+                            <label for="user-role">User Role</label>
                             <p>Clear</p>
                         </div>
-                        <input type="text" id="study-program">
-                    </div>
-                    <div class="input-field">
-                        <div class="label">
-                            <label for="class">Class</label>
-                            <p>Clear</p>
-                        </div>
-                        <input type="text" id="class">
+                        <input type="text" id="user-role">
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button id="reset-btn" type="button" onclick="resetFilter()">Reset</button>
+                    <button id="reset-btn" type="button" onclick="resetFilterUser()">Reset</button>
                     <button id="apply-btn" type="submit">Apply</button>
                 </div>
             </form>
