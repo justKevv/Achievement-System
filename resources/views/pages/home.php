@@ -39,37 +39,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Alexandra Grace</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
-                            <td>4</td>
-                            <td>Anindya</td>
-                            <td>6</td>
-                            </tr>
-                            <td>5</td>
-                            <td>Nathaniel James</td>
-                            <td>6</td>
-                            </tr>
-                            <td>6</td>
-                            <td>Nathaniel James</td>
-                            <td>1</td>
-                            </tr>
-                            <td></td>
-                            <td>See all</td>
-                            <td></td>
-                            </tr>
+                            <?php if (isset($rankAdmin) && is_array($rankAdmin) && !empty($rankAdmin)) : ?>
+                                <?php foreach ($rankAdmin as $rank) : ?>
+                                    <?php if (isset($rank['total_achievements']) && $rank['total_achievements'] > 0) : ?>
+                                        <tr>
+                                            <td><?php echo $rank['rank']; ?></td>
+                                            <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
+                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                                <?php if (count($rankAdmin) > 6): ?>
+                                    <tr>
+                                        <td></td>
+                                        <td>See all</td>
+                                        <td></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">No data available</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
