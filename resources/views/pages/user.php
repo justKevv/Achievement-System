@@ -139,6 +139,12 @@
                     <!-- Student Fields -->
                     <div id="student-fields" style="display: none">
                         <div class="detail-content">
+                            <div class="profile-section">
+                                <div class="profile-picture">
+                                    <img src="../../assets/images/avatar.png" alt="Profile Picture" id="profile-preview" />
+                                    <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)" />
+                                </div>
+                            </div>   
                             <div class="right-detail">
                                 <div class="detail">
                                     <p>NIM</p>
@@ -192,11 +198,13 @@
                     <!-- Admin Fields -->
                     <div id="admin-fields" style="display: none">
                         <div class="detail-content">
-                            <div class="right-detail">
+                            <div class="right-detail-admin">
                                 <div class="detail">
                                     <p>Admin Name</p>
                                     <input type="text" id="admin-name" name="admin_name" placeholder="Enter admin name">
                                 </div>
+                            </div>
+                            <div class="left-detail-admin">
                                 <div class="detail">
                                     <p>NIP</p>
                                     <input type="text" id="admin-nip" name="admin_nip" placeholder="Enter NIP">
@@ -211,13 +219,13 @@
                 <div class="detail-content">
                     <div class="left-detail-bottom">
                         <div class="input-field">
-                            <label for="email">Email</label>
+                            <p><label for="email">Email</label></p>
                             <input type="email" id="email" name="email" placeholder="Enter email address">
                         </div>
                     </div>
                     <div class="right-detail-bottom">
                         <div class="input-field">
-                            <label for="password">Password</label>
+                            <p><label for="password">Password</label></p>
                             <input type="password" id="password" name="password" placeholder="Enter password">
                         </div>
                     </div>
