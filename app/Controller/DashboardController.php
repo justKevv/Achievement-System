@@ -4,18 +4,21 @@ namespace App\Controller;
 
 use App\Models\Achievement;
 use App\Models\Student;
+use App\Models\User;
 use App\View;
 
 class DashboardController extends Controller
 {
     private $achievementModel;
     private $studentModel;
+    private $userModel;
 
     public function __construct($db)
     {
         parent::__construct($db);
         $this->achievementModel = new Achievement($this->db);
         $this->studentModel = new Student($this->db);
+        $this->userModel = new User($this->db);
     }
 
     public function index($request, $response, $args)
@@ -34,12 +37,11 @@ class DashboardController extends Controller
                 if ($page === 'home') {
                     $data = [
                         'stats' => $this->achievementModel->getAchievementStats(),
-                        'recent' => $this->achievementModel->getRecentAchievements(),
+                        'adminRecent' => $this->achievementModel->getRecentAchievements()
                     ];
                 } elseif ($page === 'user') {
-                    $users = $this->achievementModel->getAllUsers() ?? [];
                     $data = [
-                        'users' => $users,
+                        'users' => $this->userModel->getAllUsers() ?? []
                     ];
                 }
                 break;
@@ -60,6 +62,18 @@ class DashboardController extends Controller
                 ];
                 break;
 
+            case 'C':
+                if ($page === 'home') {
+                    $data = [
+                        'chairmanRecent' => $this->achievementModel->getRecentAchievements(),
+                        'rankChair' => $this->studentModel->getRank(6),
+                    ];
+                } else {
+                    $chairmanStudents = $this->studentModel->getAllStudent() ?? [];
+                    $data = [
+                        'chairmanStudents' => $chairmanStudents
+                    ];
+                }
             default:
                 $data = [];
                 break;

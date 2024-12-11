@@ -90,8 +90,8 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <?php if (isset($recent) && is_array($recent) && !empty($recent)) : ?>
-                            <?php foreach ($recent as $index => $achievement) : ?>
+                        <?php if (isset($adminRecent) && is_array($adminRecent) && !empty($adminRecent)) : ?>
+                            <?php foreach ($adminRecent as $index => $achievement) : ?>
                                 <tr>
                                     <td><?php echo $index + 1 ?? '-' ?></td>
                                     <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
@@ -265,37 +265,28 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Alexandra Grace</td>
-                                <td>7</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td>Nathaniel James</td>
-                                <td>6</td>
-                            </tr>
-                            <td>4</td>
-                            <td>Anindya</td>
-                            <td>6</td>
-                            </tr>
-                            <td>5</td>
-                            <td>Nathaniel James</td>
-                            <td>6</td>
-                            </tr>
-                            <td>6</td>
-                            <td>Nathaniel James</td>
-                            <td>1</td>
-                            </tr>
-                            <td></td>
-                            <td>See all</td>
-                            <td></td>
-                            </tr>
+                            <?php if (isset($rankChair) && is_array($rankChair) && !empty($rankChair)) : ?>
+                                <?php foreach ($rankChair as $rank) : ?>
+                                    <?php if (isset($rank['total_achievements']) && $rank['total_achievements'] > 0) : ?>
+                                        <tr>
+                                            <td><?php echo $rank['rank']; ?></td>
+                                            <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
+                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                        </tr>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                                <?php if (count($rankChair) > 6): ?>
+                                    <tr>
+                                        <td></td>
+                                        <td>See all</td>
+                                        <td></td>
+                                    </tr>
+                                <?php endif; ?>
+                            <?php else : ?>
+                                <tr>
+                                    <td colspan="3" class="text-center">No data available</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -316,30 +307,22 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                        </tr>
+                        <?php if (isset($chairmanRecent) && is_array($chairmanRecent) && !empty($chairmanRecent)) : ?>
+                            <?php foreach ($chairmanRecent as $index => $achievement) : ?>
+                                <tr>
+                                    <td><?php echo $index + 1 ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
+                                    <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
+                                    <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <tr>
+                                <td colspan="6" class="text-center">No data available</td>
+                            </tr>
+                        <?php endif; ?>
                     </tbody>
                 </table>
             </div>
