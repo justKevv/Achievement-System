@@ -37,7 +37,8 @@ class DashboardController extends Controller
                 if ($page === 'home') {
                     $data = [
                         'stats' => $this->achievementModel->getAchievementStats(),
-                        'adminRecent' => $this->achievementModel->getRecentAchievements()
+                        'adminRecent' => $this->achievementModel->getRecentAchievements(),
+                        'rankAdmin' => $this->studentModel->getRank(6),
                     ];
                 } elseif ($page === 'user') {
                     $data = [
