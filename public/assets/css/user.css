@@ -2,97 +2,109 @@
 
 body {
     font-family: 'Outfit', sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f8f9fa;
-  }
+    margin: 0;
+    padding: 0;
+    background-color: #f8f9fa;
+}
 
-  .container {
-  width: 95%;
-  margin: 0 auto;
-  }
+.container {
+    width: 95%;
+    margin: 0 auto;
+}
 
-  main{
-      background-color: #fff;
-      border-radius: 20px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      margin: 25px 40px 40px 40px;
-  }
-  .content-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0px 40px;
-  }
-  .content-header .actions {
-      display: flex;
-      gap: 20px;
-  }
-  .search {
-      display: flex;
-      align-items: center;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 5px;
-  }
-  .search input {
-      font-family: Outfit;
-      border: none;
-      padding: 5px;
-      width: 150px;
-  }
-  .search-btn {
-      background: none;
-      border: none;
-      cursor: pointer;
-  }
-  .filter{
-      display: flex;
-      align-items: center;
-      border: 1px solid #ddd;
-      border-radius: 10px;
-      padding: 5px;
-      cursor: pointer;
-  }
-  .filter-btn {
-      font-family: Outfit;
-      background: none;
-      border: none;
-      padding: 5px;
-  }
-  .filter img {
-      width: 20px;
-  }
-  .add-btn {
-      font-family: Outfit;
-      background-color: #40548B;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      padding: 10px 20px;
-      cursor: pointer;
-  }
+main {
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin: 25px 40px 40px 40px;
+}
 
-  /* Table Styles */
-  table {
+.content-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 40px;
+}
+
+.content-header .actions {
+    display: flex;
+    gap: 20px;
+}
+
+.search {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+}
+
+.search input {
+    font-family: Outfit;
+    border: none;
+    padding: 5px;
+    width: 150px;
+}
+
+.search-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+}
+
+.filter {
+    display: flex;
+    align-items: center;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 5px;
+    cursor: pointer;
+}
+
+.filter-btn {
+    font-family: Outfit;
+    background: none;
+    border: none;
+    padding: 5px;
+}
+
+.filter img {
+    width: 20px;
+}
+
+.add-btn {
+    font-family: Outfit;
+    background-color: #40548B;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+/* Table Styles */
+table {
     width: 100%;
     border-collapse: collapse;
     margin-top: 0px;
-  }
-  th{
-      font-weight: 500;
-  }
-  th, td {
+}
+
+th {
+    font-weight: 500;
+}
+
+th, td {
     border-top: 1px solid #ddd;
     padding: 0px;
     text-align: center;
-  }
-  
-  th {
+}
+
+th {
     color: black;
     padding: 15px;
-  }
-  .role {
+}
+
+.role {
     padding: 0px 0;
     margin: 5px auto;
     border-radius: 25px;
@@ -101,103 +113,116 @@ body {
     justify-content: center;
     align-items: center;
     width: 70%;
-  }
+}
 
-  .role.admin {
-      display: flex;
-      background-color: #FFF0C3;
-  }
-  .role.student {
-      display: flex;
-      background-color: #DCE1FF;
-  }
-  .role.chairman {
+.role.admin {
+    display: flex;
+    background-color: #FFF0C3;
+}
+
+.role.student {
+    display: flex;
+    background-color: #DCE1FF;
+}
+
+.role.chairman {
     display: flex;
     background-color: #DFF0D8;
 }
-  .role p{
-      line-height: 10px;
-      font-size: 16px;
-  }
 
-  /* Filter Modal */
-  .filter-modal {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      display: none;
-  }
+.role p {
+    line-height: 10px;
+    font-size: 16px;
+}
 
-  .filter-content {
-      position: absolute;
-      left: 58%;
-      top: 30%;
-      height: 319px;
-      width: 355px;
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
-  .filter-content .header-filter {
-      background-color: #F9F9F9;
-      display: flex;
-      justify-content: space-between;
-      padding: 0px 15px;
-      border-bottom: 1px solid #ddd;
-  }
-  .filter-content .form-input {
-      padding: 5px 20px;
-  }
-  .filter-content .input-field {
-      margin-bottom: 5px;
-  }
-  .filter-content .input-field .label {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-  }
-  .filter-content .input-field .label p {
-      color: #42548C;
-      cursor: pointer;
-  }
-  .filter-content .input-field .label label{
-      color: #AEAEAE;
-  }
-  .filter-content form input[type="text"] {
-      width: 93%;
-      padding: 10px;
-      border: 1px solid #AEAEAE;
-      border-radius: 5px;
-  }
-  .modal-actions {
-      padding: 10px 20px;
-      display: flex;
-      justify-content: space-between;
-      border-top: 1px solid #ddd;
-  }
-  #reset-btn {
-      font-family: Outfit;
-      background: white;
-      border: 1px solid #AEAEAE;
-      color: black;
-      cursor: pointer;
-      padding: 10px 20px;
-      border-radius: 10px;
-  }
-   #apply-btn{
-      font-family: Outfit;
-      background-color: #42548C;
-      color: white;
-      border: none;
-      cursor: pointer;
-      padding: 10px 20px;
-      border-radius: 10px;
-  }
+/* Filter Modal */
+.filter-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
+}
 
-  /* Add Student Modal */
-  .achievement-detail{
+.filter-content {
+    position: absolute;
+    left: 58%;
+    top: 30%;
+    height: 319px;
+    width: 355px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.filter-content .header-filter {
+    background-color: #F9F9F9;
+    display: flex;
+    justify-content: space-between;
+    padding: 0px 15px;
+    border-bottom: 1px solid #ddd;
+}
+
+.filter-content .form-input {
+    padding: 5px 20px;
+}
+
+.filter-content .input-field {
+    margin-bottom: 5px;
+}
+
+.filter-content .input-field .label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.filter-content .input-field .label p {
+    color: #42548C;
+    cursor: pointer;
+}
+
+.filter-content .input-field .label label {
+    color: #AEAEAE;
+}
+
+.filter-content form input[type="text"] {
+    width: 93%;
+    padding: 10px;
+    border: 1px solid #AEAEAE;
+    border-radius: 5px;
+}
+
+.modal-actions {
+    padding: 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-top: 1px solid #ddd;
+}
+
+#reset-btn {
+    font-family: Outfit;
+    background: white;
+    border: 1px solid #AEAEAE;
+    color: black;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+#apply-btn {
+    font-family: Outfit;
+    background-color: #42548C;
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 10px 20px;
+    border-radius: 10px;
+}
+
+/* Add Student Modal */
+.achievement-detail {
     position: fixed;
     top: 0;
     left: 0;
@@ -208,25 +233,29 @@ body {
     justify-content: center;
     align-items: center;
 }
+
 .profile-section {
     flex: 1;
     text-align: center;
     padding-right: 20px;
-  }
-  .profile-picture {
+}
+
+.profile-picture {
     position: relative;
     width: 100px;
     height: 100px;
     padding-top: 10px;
     margin: 0 auto;
-  }
-  .profile-picture img {
+}
+
+.profile-picture img {
     width: 100px;
     height: 100px;
     border-radius: 50%;
     border: 1px solid #ccc;
-  }
-  .profile-picture input[type="file"] {
+}
+
+.profile-picture input[type="file"] {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -234,8 +263,8 @@ body {
     height: 30px;
     opacity: 0;
     cursor: pointer;
-  }
-  
+}
+
 .achievement-detail-content {
     background: white;
     border-radius: 10px;
@@ -245,56 +274,65 @@ body {
 .achievement-detail-content .header-detail {
     display: flex;
     justify-content: space-between;
-    padding: 0px 15px;
+    padding: 0px 30px;
     border-bottom: 1px solid #ddd;
 }
+
 .achievement-detail-content .detail-content {
     display: flex;
     padding: 20px 40px;
 }
+
 .achievement-detail-content .right-detail {
     flex: 2;
     padding: 0px 30px;
     margin-bottom: 10px;
 }
+
 .achievement-detail-content .left-detail {
     flex: 2;
     padding: 0px 20px;
     margin-bottom: 10px;
 }
+
 .achievement-detail-content .right-detail-bottom {
     flex: 2;
     padding: 0px 20px 0px 50px;
     margin-bottom: 10px;
 }
+
 .achievement-detail-content .left-detail-bottom {
     flex: 2;
     padding-left: 170px;
     margin-bottom: 10px;
 }
+
 .detail-content input, select {
-  font-family: Outfit;
-  width: 100%;
-  height: 40px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  font-size: 14px;
-  box-sizing: border-box;
+    font-family: Outfit;
+    width: 100%;
+    height: 40px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    box-sizing: border-box;
 }
+
 .detail-content input[type="date"] {
     font-family: Outfit;
     padding: 6px;
 }
+
 .detail span {
     font-size: 12px;
     color: #888;
 }
 
 hr.divider {
-  border: none;
-  border-top: 1px solid #ddd;
+    border: none;
+    border-top: 1px solid #ddd;
 }
+
 .detail-actions {
     margin-top: -35px;
     display: flex;
@@ -302,8 +340,9 @@ hr.divider {
     gap: 10px;
     padding: 20px 40px;
 }
+
 #submit {
-   font-family: Outfit;
+    font-family: Outfit;
     background-color: #40548B;
     color: #fff;
     border: none;
@@ -313,80 +352,117 @@ hr.divider {
     margin-right: 20px;
     border-radius: 10px;
 }
-  .close-btn {
-      float: right;
-      border: none;
-      background: none;
-      font-size: 20px;
-      cursor: pointer;
-  }
+
+.close-btn {
+    float: right;
+    border: none;
+    background: none;
+    font-size: 20px;
+    cursor: pointer;
+}
 
 
-  /* Dropdown Menu */
-  .action-menu {
-      position: relative;
-  }
+/* Dropdown Menu */
+.action-menu {
+    position: relative;
+}
 
-  .dropdown {
-      display: none;
-      position: absolute;
-      right: 0;
-      background: white;
-      list-style: none;
-      padding: 5px 20px;
-      z-index: 10;
-      border-radius: 15px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  }
+.dropdown {
+    display: none;
+    position: absolute;
+    right: 0;
+    background: white;
+    list-style: none;
+    padding: 5px 20px;
+    z-index: 10;
+    border-radius: 15px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
 
-  .dropdown > div {
-      display: flex;
-      justify-content: start;
-      gap: 5px;
-      padding: 5px 20px;
-      cursor: pointer;
-      border-radius: 15px;
-  }
+.dropdown>div {
+    display: flex;
+    justify-content: start;
+    gap: 5px;
+    padding: 5px 20px;
+    cursor: pointer;
+    border-radius: 15px;
+}
 
-  .pagination {
-      font-family: Outfit;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-      padding: 20px 40px;
-      border-top: 1px solid #ddd;
-  }
-  .pagination .btn-pagination {
-      font-family: Outfit;
-      background-color: white;
-      color: #767676;
-      border: none;
-      cursor: pointer;
-      padding: 5px 10px;
-  }
-  .active{
-      font-family: Outfit;
-      background-color: #42548C;
-      border: none;
-      cursor: pointer;
-      padding: 5px 9.5px;
-      color: white;
-      border-radius: 50%;
-  }
-  .btn-actions {
-      background: none;
-      border: none;
-      cursor: pointer;
-      align-items: center;
-  }
-  
-  .btn-actions span {
-      color: #767676;
-      display: inline-block;
-      width: 6px;
-      height: 6px;
-      background-color: #767676;
-      border-radius: 50%;
-      margin: 0 2px;
-      line-height: 0px;
-  }
+.pagination {
+    font-family: Outfit;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: 20px 40px;
+    border-top: 1px solid #ddd;
+}
+
+.pagination .btn-pagination {
+    font-family: Outfit;
+    background-color: white;
+    color: #767676;
+    border: none;
+    cursor: pointer;
+    padding: 5px 10px;
+}
+
+.active {
+    font-family: Outfit;
+    background-color: #42548C;
+    border: none;
+    cursor: pointer;
+    padding: 5px 9.5px;
+    color: white;
+    border-radius: 50%;
+}
+
+.btn-actions {
+    background: none;
+    border: none;
+    cursor: pointer;
+    align-items: center;
+}
+
+.btn-actions span {
+    color: #767676;
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: #767676;
+    border-radius: 50%;
+    margin: 0 2px;
+    line-height: 0px;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-left select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}
+
+.header-detail {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 30rem;
+}
+
+.header-right {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.header-right select {
+    padding: 0.5rem;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    font-size: 0.9rem;
+}

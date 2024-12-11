@@ -187,8 +187,8 @@
             <div class="right-dashboard">
                 <section class="user-avatar">
                     <img src="/assets/images/avatar.png" alt="Avatar">
-                    <h2>Adam Smith</h2>
-                    <p id="major">D4 Informatics Engineering</p>
+                    <h2><?php echo isset($student['student_name']) ? htmlspecialchars($student['student_name']) : 'Student Name'; ?></h2>
+                    <p id="major"><?php echo $student['student_study_program'] ?></p>
                     <div class="stats">
                         <div class="detail-stats1">
                             <p>Achievement</p>

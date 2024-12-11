@@ -34,6 +34,11 @@ class database
         }
     }
 
+    public function getConnection()
+    {
+        return $this->conn;
+    }
+
     public function query($sql)
     {
         try {
