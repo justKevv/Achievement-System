@@ -35,7 +35,7 @@
                             <tr>
                                 <th>Rank</th>
                                 <th>Name</th>
-                                <th>Points</th>
+                                <th><img src="/assets/images/medal.png" alt="Medal" style="width: 12px;"></th>
                             </tr>
                         </thead>
                         <tbody>
