@@ -30,18 +30,29 @@ return function (App $app, $db) {
             );
         });
     })->add(new RedirectIfAuthenticated($app->getContainer()));
-    
+
     $app->get('/logout', function ($request, $response, $args) use ($db) {
         $userController = new UserController($db);
         return $userController->logout();
     });
 
 
-    $app->get('/dashboard[/{page}]', function ($request, $response, $args) use ($db) {
-        $dashboardController = new DashboardController($db);
-        return $dashboardController->index($request, $response, $args);
-    })->add(new RoleMiddleware($app->getContainer(), $_SESSION['role_id'] ?? null))
-        ->add(new AuthMiddleware($app->getContainer()));
+    $app->group('/', function ($web) use ($db) {
+        $web->get('dashboard[/{page}]', function ($request, $response, $args) use ($db) {
+            $dashboardController = new DashboardController($db);
+            return $dashboardController->index($request, $response, $args);
+        })->add(new RoleMiddleware($web->getContainer(), $_SESSION['role_id'] ?? null));
+
+        $web->get('profile', function ($request, $response, $args) {
+            View::render('../resources/views/pages/profile.php');
+            return $response;
+        })->add(new RoleMiddleware($web->getContainer(), $_SESSION['role_id'] ?? null));
+    })->add(new AuthMiddleware($app->getContainer()));
+
+    $app->post('/api/users/add', function ($request, $response) use ($db) {
+        $userController = new UserController($db);
+        return $userController->createUser($request, $response);
+    })->add(new AuthMiddleware($app->getContainer()));
 
     // Handle 404 Page
     $app->map(['GET', 'POST', 'PUT', 'DELETE', 'PATCH'], '/{routes:.+}', function ($request, $response) {

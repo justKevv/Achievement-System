@@ -7,8 +7,10 @@ use PDO;
 class User extends Model
 {
     protected $db;
+
+    protected $table = 'dbo.users';
     private $user_id;
-    private $username;
+    private $user_email;
     private $user_password;
     private $role_id;
 
@@ -27,14 +29,14 @@ class User extends Model
         $this->user_id = $this->sanitize($user_id);
     }
 
-    public function getUsername()
+    public function getuser_email()
     {
-        return $this->username;
+        return $this->user_email;
     }
 
-    public function setUsername($username)
+    public function setuser_email($user_email)
     {
-        $this->username = $this->sanitize($username);
+        $this->user_email = $this->sanitize($user_email);
     }
 
     public function getUserPassword()
@@ -57,31 +59,41 @@ class User extends Model
         $this->role_id = $this->sanitize($role_id);
     }
 
-    public function save($table = 'dbo.users', $data = [])
-    {
+    public function save($table, $userData)
+{
+    try {
+        $query = "INSERT INTO users (user_email, user_password, role_id)
+                 VALUES (:user_email, :user_password, :role_id)";
 
-        $this->setUsername($this->username);
-        $this->setUserPassword($this->user_password);
-        $this->setRoleId($this->role_id);
-
-        $data = [
-            'username' => $this->username,
-            'user_password' => $this->user_password,
-            'role_id' => $this->role_id
+        $params = [
+            ':user_email' => $userData['user_email'],
+            ':user_password' => $userData['user_password'],
+            ':role_id' => $userData['role_id']
         ];
-        parent::save($table, $data);
+
+        $result = $this->db->prepareAndExecute($query, $params);
+
+        if ($result) {
+            // Get the last inserted ID
+            return $this->db->getConnection()->lastInsertId();
+        }
+        return false;
+    } catch (\PDOException $e) {
+        error_log("Error in User save(): " . $e->getMessage());
+        throw $e;
     }
+}
 
     public function update($table = 'dbo.users', $data = [], $where = "user_id = :user_id")
     {
 
         $this->setUserId($this->user_id);
-        $this->setUsername($this->username);
+        $this->setuser_email($this->user_email);
         $this->setUserPassword($this->user_password);
         $this->setRoleId($this->role_id);
 
         $data = [
-            ':username' => $this->username,
+            ':user_email' => $this->user_email,
             ':user_password' => $this->user_password,
             ':role_id' => $this->role_id,
             ':user_id' => $this->user_id

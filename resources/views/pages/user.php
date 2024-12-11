@@ -1,4 +1,8 @@
-<link rel="stylesheet" href="/assets/css/user.css">
+<head>
+    <link rel="stylesheet" href="/assets/css/user.css">
+    <script defer src="/assets/js/pagination.js"></script>
+    <script defer src="/assets/js/modalAdd.js"></script>
+</head>
 
 <body>
     <div class="container">
@@ -49,8 +53,8 @@
                                             <span>.</span>
                                         </div>
                                         <div class="dropdown">
-                                            <div onclick="toggleDetail(<?php $user['id'] ?>)"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>
-                                            <div onclick="deleteRow(<?php $user['id'] ?>)"><span><img src="../../assets/icons/trash.png" alt=""></span>Delete</div>
+                                            <div onclick="toggleDetail(<?php echo $user['id'] ?>)"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>
+                                            <div onclick="deleteRow(<?php echo $user['id'] ?>)"><span><img src="../../assets/icons/trash.png" alt=""></span>Delete</div>
                                         </div>
                                     </div>
                                 </td>
@@ -115,84 +119,114 @@
     <!-- Add User Student Modal -->
     <div class="achievement-detail" id="detail-modal">
         <div class="achievement-detail-content">
-            <div class="header-detail">
-                <h3>Add Student</h3>
-                <button class="close-btn" onclick="toggleDetail()">✖</button>
-            </div>
-            <div class="detail-content">
-                <div class="profile-section">
-                    <div class="profile-picture">
-                        <img src="../../assets/images/avatar.png" alt="Profile Picture" id="profile-preview" />
-                        <input type="file" id="profile-upload" accept="image/*" onchange="previewImage(event)" />
+            <form onsubmit="return false;" id="user-form">
+
+                <div class="header-detail">
+                    <div class="header-left">
+                        <h2>Add New User</h2>
                     </div>
-                </div>
-                <div class="right-detail">
-                    <div class="detail">
-                        <p>NIM</p>
-                        <input type="text" value="">
-                    </div>
-                    <div class="detail">
-                        <p>Name</p>
-                        <input type="text" value="">
-                    </div>
-                    <div class="detail">
-                        <p>Study Program</p>
-                        <select>
-                            <option value="regional">D4 Informatics Engineering</option>
-                            <option value="national">D4 Business Information System</option>
-                            <option value="international">D2 Site Software Development</option>
+                    <div class="header-right">
+                        <select id="role-select" name="role" onchange="updateFormFields(this.value)">
+                            <option value="">Select Role</option>
+                            <option value="student">Student</option>
+                            <option value="admin">Admin</option>
                         </select>
-                    </div>
-                    <div class="detail">
-                        <p>Class</p>
-                        <input type="text" value="">
-                    </div>
-                    <div class="detail">
-                        <p>Date of Birth</p>
-                        <input type="date" value="">
+                        <button class="close-btn" onclick="window.toggleDetail()">&times;</button>
                     </div>
                 </div>
-                <div class="left-detail">
-                    <div class="detail">
-                        <p>Address</p>
-                        <input type="text" value="">
+                <div class="detail-content">
+
+                    <!-- Student Fields -->
+                    <div id="student-fields" style="display: none">
+                        <div class="detail-content">
+                            <div class="right-detail">
+                                <div class="detail">
+                                    <p>NIM</p>
+                                    <input type="text" id="student-nim" name="student_nim" placeholder="Enter NIM">
+                                </div>
+                                <div class="detail">
+                                    <p>Name</p>
+                                    <input type="text" id="student-name" name="student_name" placeholder="Enter full name">
+                                </div>
+                                <div class="detail">
+                                    <p>Study Program</p>
+                                    <select id="student-study-program" name="student_study_program">
+                                        <option value="D4-Informatics Engineering">D4 Informatics Engineering</option>
+                                        <option value="D4-Business Information System">D4 Business Information System</option>
+                                        <option value="D2-Site Software Development">D2 Site Software Development</option>
+                                    </select>
+                                </div>
+                                <div class="detail">
+                                    <p>Class</p>
+                                    <input type="text" id="student-class" name="student_class" placeholder="Enter class">
+                                </div>
+                                <div class="detail">
+                                    <p>Gender</p>
+                                    <select id="student-gender" name="student_gender">
+                                        <option value="M">Male</option>
+                                        <option value="F">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="left-detail">
+                                <div class="detail">
+                                    <p>Date of Birth</p>
+                                    <input type="date" id="student-date-of-birth" name="student_date_of_birth">
+                                </div>
+                                <div class="detail">
+                                    <p>Enrollment Date</p>
+                                    <input type="date" id="student-enrollment-date" name="student_enrollment_date">
+                                </div>
+                                <div class="detail">
+                                    <p>Address</p>
+                                    <input type="text" id="student-address" name="student_address" placeholder="Enter address">
+                                </div>
+                                <div class="detail">
+                                    <p>Phone Number</p>
+                                    <input type="text" id="student-phone-number" name="student_phone_number" placeholder="Enter phone number">
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                    <div class="detail">
-                        <p>Enrollment Date</p>
-                        <input type="date" value="">
-                    </div>
-                    <div class="detail">
-                        <p>Phone Number</p>
-                        <input type="text" value="">
-                    </div>
-                    <div class="detail">
-                        <p>Gender</p>
-                        <input type="text" value="">
+
+                    <!-- Admin Fields -->
+                    <div id="admin-fields" style="display: none">
+                        <div class="detail-content">
+                            <div class="right-detail">
+                                <div class="detail">
+                                    <p>Admin Name</p>
+                                    <input type="text" id="admin-name" name="admin_name" placeholder="Enter admin name">
+                                </div>
+                                <div class="detail">
+                                    <p>NIP</p>
+                                    <input type="text" id="admin-nip" name="admin_nip" placeholder="Enter NIP">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Divider Line -->
-            <hr class="divider">
-            <!-- Email and Password Section -->
-            <div class="detail-content">
-                <div class="left-detail-bottom">
-                    <div class="input-field">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email">
+
+                <hr class="divider">
+                <!-- Common Fields -->
+                <div class="detail-content">
+                    <div class="left-detail-bottom">
+                        <div class="input-field">
+                            <label for="email">Email</label>
+                            <input type="email" id="email" name="email" placeholder="Enter email address">
+                        </div>
+                    </div>
+                    <div class="right-detail-bottom">
+                        <div class="input-field">
+                            <label for="password">Password</label>
+                            <input type="password" id="password" name="password" placeholder="Enter password">
+                        </div>
                     </div>
                 </div>
-                <div class="right-detail-bottom">
-                    <div class="input-field">
-                        <label for="password">Password</label>
-                        <input type="password" id="password" name="password">
-                    </div>
+
+                <div class="detail-actions">
+                    <button type="button" id="submit" onclick="handleSubmit(event)">Submit</button>
                 </div>
-            </div>
-            <div class="detail-actions">
-                <button id="submit">Submit</button>
-            </div>
+            </form>
         </div>
     </div>
-    <script src="/assets/js/pagination.js"></script>
-    <script src="script.js"></script>
 </body>
