@@ -8,6 +8,18 @@
     margin: 50px auto;
 }
 
+.navbar[data-role="A"] {
+    width: 486px;
+}
+
+.navbar[data-role="S"] {
+    width: 486px;
+}
+
+.navbar[data-role="C"] {
+    width: 300px;
+}
+
 .white-pill {
     width: 486px;
     height: 65px;
@@ -17,6 +29,20 @@
     background: white;
     border-radius: 100px;
     box-shadow: 0px 5px 23.100000381469727px -11px rgba(0, 0, 0, 0.25);
+}
+
+
+
+.admin-pill {
+    width: 470px;
+}
+
+.student-pill {
+    width: 486px;
+}
+
+.chairman-pill {
+    width: 339px;
 }
 
 .selectable {

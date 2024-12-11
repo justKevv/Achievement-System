@@ -43,8 +43,9 @@ window.updateFormFields = function(role) {
 
     const studentFields = document.getElementById('student-fields');
     const adminFields = document.getElementById('admin-fields');
+    const chairmanFields = document.getElementById('chairman-fields');
 
-    if (!studentFields || !adminFields) {
+    if (!studentFields || !adminFields || !chairmanFields) {
         console.error('Fields not found'); // Debug
         return;
     }
@@ -52,12 +53,19 @@ window.updateFormFields = function(role) {
     if (role === 'student') {
         studentFields.style.display = 'flex';
         adminFields.style.display = 'none';
+        chairmanFields.style.display = 'none';
     } else if (role === 'admin') {
         studentFields.style.display = 'none';
         adminFields.style.display = 'flex';
+        chairmanFields.style.display = 'none';
+    } else if (role === 'chairman') {
+        studentFields.style.display = 'none';
+        adminFields.style.display = 'none';
+        chairmanFields.style.display = 'flex';
     } else {
         studentFields.style.display = 'none';
         adminFields.style.display = 'none';
+        chairmanFields.style.display = 'none';
     }
 };
 
@@ -85,9 +93,12 @@ window.handleSubmit = async function(e) {
         formData.student_enrollment_date = document.getElementById('student-enrollment-date').value;
         formData.student_address = document.getElementById('student-address').value;
         formData.student_phone_number = document.getElementById('student-phone-number').value;
-    } else {
+    } else if (role === 'admin') {
         formData.admin_name = document.getElementById('admin-name').value;
         formData.admin_nip = document.getElementById('admin-nip').value;
+    } else if (role === 'chairman') {
+        formData.chairman_name = document.getElementById('chairman-name').value;
+        formData.chairman_nip = document.getElementById('chairman-nip').value;
     }
 
     try {
