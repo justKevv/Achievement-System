@@ -115,6 +115,24 @@ class Student extends Model
         }
     }
 
+    public function getAllStudent()
+    {
+        try {
+            $query = "SELECT s.student_nim, s.student_name, s.student_study_program, s.student_class, u.user_email FROM dbo.student s INNER JOIN dbo.users u ON s.user_id = u.user_id ORDER BY s.student_nim ASC;";
+            $result = $this->db->query($query);
+
+            if ($result) {
+                return $result->fetchAll(PDO::FETCH_ASSOC);
+            }
+
+
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting all student: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
     public function getRecentTop3Achievement($userId)
     {
         try {
