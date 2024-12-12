@@ -1,5 +1,6 @@
 <?php
 
+
 namespace App\Controller;
 
 use App\Models\Achievement;
@@ -35,39 +36,66 @@ class DashboardController extends Controller
         switch ($_SESSION['role_id']) {
             case 'A':
                 if ($page === 'home') {
+                    $stats = $this->achievementModel->getAchievementStats();
                     $data = [
-                        'stats' => $this->achievementModel->getAchievementStats(),
+                        'stats' => $stats,
                         'adminRecent' => $this->achievementModel->getRecentAchievements(),
                         'rankAdmin' => $this->studentModel->getRank(6),
                     ];
-                } elseif ($page === 'user') {
+                } elseif ($page === 'approval') {
+                    $adminAchievements = $this->achievementModel->getAllAchievements() ?? [];
                     $data = [
-                        'users' => $this->userModel->getAllUsers() ?? []
+                        'adminAchievements' => $adminAchievements
+                    ];
+                } elseif ($page === 'user') { // Ensure this case matches the page name
+                    $userData = $this->userModel->getAllUsers() ?? [];
+                    $data = [
+                        'users' => $userData
+                    ];
+                }
+
+                break;
+
+            case 'S':
+                if ($page === 'submission') {
+                    $studentAchievements = $this->achievementModel->getAchievementsByUserId($_SESSION['user_id']) ?? [];
+                    $data = [
+                        'studentAchievements' => $studentAchievements
+                    ];
+                } elseif ($page === 'rank') {
+                    $ranking = $this->studentModel->getRankAll() ?? [];
+                    $data = [
+                        'rankStudent' => $ranking
+                    ];
+                } else {
+                    $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
+                    $recentStudent = $this->studentModel->getRecentTop3Achievement($_SESSION['user_id']) ?? [];
+                    $total = $this->studentModel->getTotalAchievement($_SESSION['user_id']) ?? [];
+                    $currentRank = $this->studentModel->getCurrentRank($_SESSION['user_id']) ?? [];
+                    $rank = $this->studentModel->getRank(3);
+                    $studentStats = $this->achievementModel->getAchievementStats();
+
+                    $data = [
+                        'student' => $mahasiswa,
+                        'recentStudent' => $recentStudent,
+                        'total' => $total,
+                        'currentRank' => $currentRank,
+                        'ranking' => $rank,
+                        'studentStats' => $studentStats
                     ];
                 }
                 break;
 
-            case 'S':
-                $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
-                $recentStudent = $this->studentModel->getRecentTop3Achievement($_SESSION['user_id']) ?? [];
-                $total = $this->studentModel->getTotalAchievement($_SESSION['user_id']) ?? [];
-                $currentRank = $this->studentModel->getCurrentRank($_SESSION['user_id']) ?? [];
-                $rank = $this->studentModel->getRank(3);
-
-                $data = [
-                    'student' => $mahasiswa,
-                    'recentStudent' => $recentStudent,
-                    'total' => $total,
-                    'currentRank' => $currentRank,
-                    'ranking' => $rank
-                ];
-                break;
-
             case 'C':
                 if ($page === 'home') {
+                    $statsChairman = $this->achievementModel->getAchievementStats();
+                    $chairmanRecent = $this->achievementModel->getRecentAchievements();
+                    $rankChair = $this->studentModel->getRank(6);
+
                     $data = [
-                        'chairmanRecent' => $this->achievementModel->getRecentAchievements(),
-                        'rankChair' => $this->studentModel->getRank(6),
+                        'statsChairman' => $statsChairman,
+                        'chairmanRecent' => $chairmanRecent,
+                        'rankChair' => $rankChair,
                     ];
                 } else {
                     $chairmanStudents = $this->studentModel->getAllStudent() ?? [];
