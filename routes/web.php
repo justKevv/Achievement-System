@@ -1,5 +1,6 @@
 <?php
 
+use App\Controller\AchievementController;
 use App\Controller\DashboardController;
 use App\Middleware\AuthMiddleware;
 use App\Middleware\RedirectIfAuthenticated;
@@ -38,6 +39,7 @@ return function (App $app, $db) {
 
 
     $app->group('/', function ($web) use ($db) {
+
         $web->get('dashboard[/{page}]', function ($request, $response, $args) use ($db) {
             $dashboardController = new DashboardController($db);
             return $dashboardController->index($request, $response, $args);
@@ -47,11 +49,22 @@ return function (App $app, $db) {
             View::render('../resources/views/pages/profile.php');
             return $response;
         })->add(new RoleMiddleware($web->getContainer(), $_SESSION['role_id'] ?? null));
+
+        $web->post('achievement/create', function ($request, $response) use ($db) {
+            $achievementController = new AchievementController($db);
+            return $achievementController->create($request, $response);
+        })->add(new RoleMiddleware($web->getContainer(), 'S'));
+
     })->add(new AuthMiddleware($app->getContainer()));
 
     $app->post('/api/users/add', function ($request, $response) use ($db) {
         $userController = new UserController($db);
         return $userController->createUser($request, $response);
+    })->add(new AuthMiddleware($app->getContainer()));
+
+    $app->put('/api/users/edit/{id}', function ($request, $response, $args) use ($db) {
+        $userController = new UserController($db);
+        return $userController->updateUser($request, $response, $args);
     })->add(new AuthMiddleware($app->getContainer()));
 
     // Handle 404 Page

@@ -119,15 +119,15 @@
                 </section>
                 <section class="stats-section">
                     <div class="stat-box">
-                        <h2 id="intern"><?php echo $stats['intern'] ?? 0 ?></h2>
+                        <h2 id="intern"><?php echo $studentStats['intern'] ?? 0 ?></h2>
                         <p>International Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="national"><?php echo $stats['national'] ?? 0 ?></h2>
+                        <h2 id="national"><?php echo $studentStats['national'] ?? 0 ?></h2>
                         <p>National Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="regional"><?php echo $stats['regional'] ?? 0 ?></h2>
+                        <h2 id="regional"><?php echo $studentStats['regional'] ?? 0 ?></h2>
                         <p>Regional Achievement</p>
                     </div>
                 </section>
@@ -231,15 +231,15 @@
                 </section>
                 <section class="stats-section">
                     <div class="stat-box">
-                        <h2 id="intern"><?php echo $stats['intern'] ?? 0 ?></h2>
+                        <h2 id="intern"><?php echo $statsChairman['intern'] ?? 0 ?></h2>
                         <p>International Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="national"><?php echo $stats['national'] ?? 0 ?></h2>
+                        <h2 id="national"><?php echo $statsChairman['national'] ?? 0 ?></h2>
                         <p>National Achievement</p>
                     </div>
                     <div class="stat-box">
-                        <h2 id="regional"><?php echo $stats['regional'] ?? 0 ?></h2>
+                        <h2 id="regional"><?php echo $statsChairman['regional'] ?? 0 ?></h2>
                         <p>Regional Achievement</p>
                     </div>
                 </section>
@@ -298,17 +298,17 @@
                         </tr>
                     </thead>
                     <tbody>
+                        <?php foreach ($chairmanRecent as $index => $achievement) : ?>
+                            <tr>
+                                <td><?php echo $index + 1 ?? '-' ?></td>
+                                <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
+                                <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
+                            </tr>
+                        <?php endforeach; ?>
                         <?php if (isset($chairmanRecent) && is_array($chairmanRecent) && !empty($chairmanRecent)) : ?>
-                            <?php foreach ($chairmanRecent as $index => $achievement) : ?>
-                                <tr>
-                                    <td><?php echo $index + 1 ?? '-' ?></td>
-                                    <td><?php echo htmlspecialchars($achievement['student_name']) ?? '-' ?></td>
-                                    <td><?php echo htmlspecialchars($achievement['achievement_title']) ?? '-' ?></td>
-                                    <td><?php echo htmlspecialchars($achievement['achievement_category']) ?? '-' ?></td>
-                                    <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?? '-' ?></td>
-                                    <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?? '-' ?></td>
-                                </tr>
-                            <?php endforeach; ?>
                         <?php else : ?>
                             <tr>
                                 <td colspan="6" class="text-center">No data available</td>
