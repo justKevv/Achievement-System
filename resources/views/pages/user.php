@@ -229,7 +229,7 @@
                                     <input type="text" id="chairman-name" name="chairman_name" placeholder="Enter chairman name">
                                 </div>
                             </div>
-                            <div class="left-detail-chairman">
+                            <div class="left-detail-admin">
                                 <div class="detail">
                                     <p>NIP</p>
                                     <input type="text" id="chairman-nip" name="chairman_nip" placeholder="Enter NIP">
