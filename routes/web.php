@@ -11,16 +11,17 @@ use App\ErrorHandler;
 use App\Controller\ForgetPasswordController;
 use App\Controller\UserController;
 
+// return function right here are connect to the app.php $routes variabel 
 return function (App $app, $db) {
 
     // Login Route
     $app->group('/', function ($web) use ($db) {
         $web->get('', function ($request, $response, $args) {
-            View::render('../resources/views/login.html');
-            return $response;
+            View::render('../resources/views/login.html'); // connect to the view.php in app folder only use to render the view
+            return $response; 
         });
 
-        $web->post('', function ($request, $response, $args) use ($db) {
+        $web->post('', function ($request, $response, $args) use ($db) { 
             $data = $request->getParsedBody();
 
             $userController = new UserController($db);
