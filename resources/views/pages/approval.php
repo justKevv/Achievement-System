@@ -1,4 +1,5 @@
 <link rel="stylesheet" href="/assets/css/approval.css">
+<script defer src="/assets/js/pagination.js"></script>
 
 <body>
     <div class="approval-page">
@@ -27,100 +28,41 @@
                             <th>Category</th>
                             <th>Date</th>
                             <th>Status</th>
-                            <th>Action</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>1</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                            <td>
-                                <div class="status pending">
-                                    <div class="img-status">
-                                        <img src="../../assets/icons/pending.png" alt="">
+                        <?php foreach ($adminAchievements as $index => $achievement): ?>
+                            <tr>
+                                <td><?php echo $index + 1 ?></td>
+                                <td><?php echo htmlspecialchars($achievement['student_name']) ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_title']) ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_category']) ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_date']) ?></td>
+                                <td>
+                                    <div class="status <?php echo strtolower($achievement['achievement_status']) ?>">
+                                        <div class="img-status">
+                                            <img src="../../assets/icons/<?php echo strtolower($achievement['achievement_status']) ?>.png" alt="">
+                                        </div>
+                                        <p><?= ucfirst($achievement['achievement_status']) ?></p>
                                     </div>
-                                    <p>Pending</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="action-menu">
-                                    <div class="btn-actions" onclick="toggleActionMenu(this)">
-                                        <span>.</span>
-                                        <span>.</span>
-                                        <span>.</span>
-                                    </div>
-                                    <div class="dropdown">
-                                        <div onclick="toggleDetail()"><span><img src="/assets/icons/edit.png" alt=""></span>Edit</div>
-                                        <div onclick="deleteRow()"><span><img src="/assets/icons/trash.png" alt=""></span>Delete</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>2</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                            <td>
-                                <div class="status rejected">
-                                    <span class="img-status"><img src="/assets/icons/reject.png" alt=""></span>
-                                    <p>Rejected</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="action-menu">
-                                    <div class="btn-actions" onclick="toggleActionMenu(this)">
-                                        <span>.</span>
-                                        <span>.</span>
-                                        <span>.</span>
-                                    </div>
-                                    <div class="dropdown">
-                                        <div onclick="editRow()"><span><img src="img/edit.png" alt=""></span>Edit</div>
-                                        <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>3</td>
-                            <td>Alexandra Grace</td>
-                            <td>TechFest Hackathon 2024</td>
-                            <td>International</td>
-                            <td>2024/09/10</td>
-                            <td>
-                                <div class="status approve">
-                                    <div class="img-status"><img src="/assets/icons/approve.png" alt=""></div>
-                                    <p>Approve</p>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="action-menu">
-                                    <div class="btn-actions" onclick="toggleActionMenu(this)">
-                                        <span>.</span>
-                                        <span>.</span>
-                                        <span>.</span>
-                                    </div>
-                                    <div class="dropdown">
-                                        <div onclick="editRow()"><span><img src="img/edit.png" alt=""></span>Edit</div>
-                                        <div onclick="deleteRow()"><span><img src="img/trash.png" alt=""></span>Delete</div>
-                                    </div>
-                                </div>
-                            </td>
-                        </tr>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
                     </tbody>
                 </table>
 
                 <!-- Pagination -->
                 <div class="pagination">
-                    <button class="btn-pagination">Prev</button>
-                    <button class="active">1</button>
-                    <button class="btn-pagination">2</button>
-                    <button class="btn-pagination">3</button>
-                    <button class="btn-pagination">Next</button>
+                    <button class="btn-pagination" data-page="prev">Prev</button>
+                    <?php
+                    $totalRows = count($adminAchievements); // Assuming $users is your data array
+                    $pages = ceil($totalRows / 10);
+                    for ($i = 1; $i <= $pages; $i++) {
+                        $activeClass = ($i === 1) ? 'active' : 'btn-pagination';
+                        echo "<button class='$activeClass' data-page='$i'>$i</button>";
+                    }
+                    ?>
+                    <button class="btn-pagination" data-page="next">Next</button>
                 </div>
             </main>
         </div>

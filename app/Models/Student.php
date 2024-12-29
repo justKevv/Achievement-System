@@ -275,4 +275,41 @@ class Student extends Model
         $stmt->bindParam(':student_address', $data['student_address']);
         $stmt->bindParam(':student_phone_number', $data['student_phone_number']);
     }
+
+    public function getRankAll()
+    {
+        try {
+            $query = "WITH RankedStudents AS (
+            SELECT
+                s.student_name,
+                s.student_nim,
+                s.student_study_program,
+                COUNT(a.achievement_id) as total_achievements,
+                ROW_NUMBER() OVER (ORDER BY COUNT(a.achievement_id) DESC) as rank
+            FROM dbo.student s
+            LEFT JOIN dbo.achievements a ON s.user_id = a.user_id
+            GROUP BY s.student_name, s.student_nim, s.student_study_program
+        )
+        SELECT
+            rank,
+            student_name,
+            student_nim,
+            student_study_program,
+            total_achievements
+        FROM RankedStudents
+        ORDER BY rank ASC";
+
+            $result = $this->db->query($query);
+
+            if ($result) {
+                $data = $result->fetchAll(PDO::FETCH_ASSOC);
+                error_log("Ranking data in model: " . print_r($data, true)); // Add this line
+                return $data;
+            }
+            return null;
+        } catch (\PDOException $e) {
+            error_log("Error getting rank list: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }

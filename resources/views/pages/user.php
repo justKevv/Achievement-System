@@ -34,8 +34,14 @@
                 </thead>
                 <tbody>
                     <?php if (!empty($users)): ?>
-                        <?php $i = 1; ?>
-                        <?php foreach ($users as $user): ?>
+                        <?php
+                        $rowsPerPage = 10;
+                        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
+                        $start = ($currentPage - 1) * $rowsPerPage;
+                        $displayUsers = array_slice($users, $start, $rowsPerPage);
+                        $i = $start + 1;
+                        ?>
+                        <?php foreach ($displayUsers as $user): ?>
                             <tr>
                                 <td><?php echo $i++ ?></td>
                                 <td><?php
@@ -76,8 +82,11 @@
             <div class="pagination">
                 <button class="btn-pagination" data-page="prev">Prev</button>
                 <?php
-                $totalRows = count($users); // Assuming $users is your data array
-                $pages = ceil($totalRows / 10);
+                $rowsPerPage = 10;
+                $totalRows = count($users);
+                $pages = ceil($totalRows / $rowsPerPage);
+
+                // Generate page buttons
                 for ($i = 1; $i <= $pages; $i++) {
                     $activeClass = ($i === 1) ? 'active' : 'btn-pagination';
                     echo "<button class='$activeClass' data-page='$i'>$i</button>";
@@ -117,7 +126,7 @@
     <div class="achievement-detail" id="detail-modal">
         <div class="achievement-detail-content">
             <form onsubmit="return false;" id="user-form">
-
+                <input type="hidden" id="user-id" name="user_id">
                 <div class="header-detail">
                     <div class="header-left">
                         <h2>Add New User</h2>
@@ -220,7 +229,7 @@
                                     <input type="text" id="chairman-name" name="chairman_name" placeholder="Enter chairman name">
                                 </div>
                             </div>
-                            <div class="left-detail-chairman">
+                            <div class="left-detail-admin">
                                 <div class="detail">
                                     <p>NIP</p>
                                     <input type="text" id="chairman-nip" name="chairman_nip" placeholder="Enter NIP">
