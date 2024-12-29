@@ -1,5 +1,6 @@
 <?php
 
+// models are use to store the class student, make it more simpler 
 namespace App\Models;
 
 use PDO;
