@@ -1,7 +1,5 @@
 <link rel="stylesheet" href="/assets/css/rank.css">
-<?php
-error_log("rankingAdmin in view: " . print_r($rankingAdmin ?? [], true));
-?>
+<script src="/assets/js/pagination.js"></script>
 
 <body>
     <div class="container">
@@ -35,7 +33,7 @@ error_log("rankingAdmin in view: " . print_r($rankingAdmin ?? [], true));
                                 </td>
                                 <td><?php echo htmlspecialchars($rank['student_nim']); ?></td>
                                 <td><?php echo htmlspecialchars($rank['student_study_program']); ?></td>
-                                <td><?php echo htmlspecialchars($rank['total_achievements']); ?></td>
+                                <td><?php echo htmlspecialchars($totalRank['total_points']); ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
@@ -48,11 +46,16 @@ error_log("rankingAdmin in view: " . print_r($rankingAdmin ?? [], true));
 
             <!-- Pagination -->
             <div class="pagination">
-                <button class="btn-pagination">Prev</button>
-                <button class="active">1</button>
-                <button class="btn-pagination">2</button>
-                <button class="btn-pagination">3</button>
-                <button class="btn-pagination">Next</button>
+                <button class="btn-pagination" data-page="prev">Prev</button>
+                <?php
+                $totalRows = count($rankStudent);
+                $pages = ceil($totalRows / 10);
+                for ($i = 1; $i <= $pages; $i++) {
+                    $activeClass = ($i === 1) ? 'active' : 'btn-pagination';
+                    echo "<button class='$activeClass' data-page='$i'>$i</button>";
+                }
+                ?>
+                <button class="btn-pagination" data-page="next">Next</button>
             </div>
         </main>
     </div>

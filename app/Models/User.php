@@ -137,4 +137,68 @@ class User extends Model
         $stmt = $this->db->query($sql);
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    public function getDetailUser($userId)
+    {
+        try {
+            $query = "SELECT
+            u.user_id,
+            u.user_email,
+            u.role_id,
+            COALESCE(s.student_name, a.admin_name, c.chairman_name) as name,
+            s.student_nim,
+            s.student_study_program,
+            s.student_gender,
+            s.student_class,
+            s.student_date_of_birth,
+            s.student_enrollment_date,
+            s.student_address,
+            s.student_phone_number,
+            a.admin_name,
+            a.admin_nip,
+            c.chairman_name,
+            c.chairman_nip
+        FROM dbo.users u
+        LEFT JOIN dbo.student s ON u.user_id = s.user_id
+        LEFT JOIN dbo.admin a ON u.user_id = a.user_id
+        LEFT JOIN dbo.chairman c ON u.user_id = c.user_id
+        WHERE u.user_id = :user_id";
+
+            $params = [':user_id' => $userId];
+            $result = $this->db->prepareAndExecute($query, $params);
+
+            return $result->fetch(PDO::FETCH_ASSOC);
+        } catch (\PDOException $e) {
+            error_log("Error in getDetailUser: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function updateUser($userId, $userData)
+    {
+        try {
+            $query = "UPDATE dbo.users SET user_email = :user_email WHERE user_id = :user_id";
+            $params = [
+                ':user_email' => $userData['user_email'],
+                ':user_id' => $userId
+            ];
+
+            return $this->db->prepareAndExecute($query, $params);
+        } catch (\PDOException $e) {
+            error_log("Error in updateUser: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+    public function deleteUser($userId)
+    {
+        try {
+            $query = "DELETE FROM dbo.users WHERE user_id = :user_id";
+            $params = [':user_id' => $userId];
+            return $this->db->prepareAndExecute($query, $params);
+        } catch (\PDOException $e) {
+            error_log("Error in deleteUser: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }

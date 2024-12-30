@@ -35,13 +35,9 @@
                 <tbody>
                     <?php if (!empty($users)): ?>
                         <?php
-                        $rowsPerPage = 10;
-                        $currentPage = isset($_GET['page']) ? $_GET['page'] : 1;
-                        $start = ($currentPage - 1) * $rowsPerPage;
-                        $displayUsers = array_slice($users, $start, $rowsPerPage);
-                        $i = $start + 1;
+                        $i = 1;
                         ?>
-                        <?php foreach ($displayUsers as $user): ?>
+                        <?php foreach ($users as $user): ?>
                             <tr>
                                 <td><?php echo $i++ ?></td>
                                 <td><?php
@@ -58,9 +54,11 @@
                                 <td>
                                     <div class="action-menu">
                                         <div class="btn-actions" onclick="toggleActionMenu(this)">
-                                            <span>.</span>
-                                            <span>.</span>
-                                            <span>.</span>
+                                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <circle cx="6" cy="12" r="2" fill="#42548C" />
+                                                <circle cx="12" cy="12" r="2" fill="#42548C" />
+                                                <circle cx="18" cy="12" r="2" fill="#42548C" />
+                                            </svg>
                                         </div>
                                         <div class="dropdown">
                                             <div onclick="toggleDetail(<?php echo $user['user_id'] ?>)"><span><img src="../../assets/icons/edit.png" alt=""></span>Edit</div>

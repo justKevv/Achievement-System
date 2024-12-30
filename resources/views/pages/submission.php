@@ -39,7 +39,20 @@
                             <td><?= htmlspecialchars($achievement['achievement_organizer']) ?></td>
                             <td><?= htmlspecialchars($achievement['achievement_date']) ?></td>
                             <td>
-                                <div class="status <?= strtolower($achievement['achievement_status']) ?>">
+                                <div class="status <?= strtolower($achievement['achievement_status']) ?>"
+                                    data-achievement-id="<?= $achievement['achievement_id'] ?>"
+                                    data-title="<?= htmlspecialchars($achievement['achievement_title']) ?>"
+                                    data-description="<?= htmlspecialchars($achievement['achievement_description']) ?>"
+                                    data-category="<?= htmlspecialchars($achievement['achievement_category']) ?>"
+                                    data-date="<?= htmlspecialchars($achievement['achievement_date']) ?>"
+                                    data-organizer="<?= htmlspecialchars($achievement['achievement_organizer']) ?>"
+                                    data-certificate="<?= $achievement['certificate_file'] ?? '' ?>"
+                                    data-documentation="<?= $achievement['documentation_file'] ?? '' ?>"
+                                    data-status="<?= htmlspecialchars($achievement['achievement_status']) ?>"
+                                    data-verification-by="<?= htmlspecialchars($achievement['verification_by'] ?? '') ?>"
+                                    data-verification-at="<?= isset($achievement['verification_at']) ? date('d M Y H:i', strtotime($achievement['verification_at'])) : '' ?>"
+                                    style="cursor: pointer;"
+                                    onclick="openViewModal(this)">
                                     <div class="img-status">
                                         <img src="/assets/icons/<?= strtolower($achievement['achievement_status']) ?>.png" alt="">
                                     </div>
@@ -155,17 +168,85 @@
         </div>
     </div>
 
+    <!-- View Achievement Modal -->
+    <div class="achievement-detail" id="view-modal">
+        <div class="achievement-detail-content">
+            <div class="header-detail">
+                <h3>Achievement Details</h3>
+                <button class="close-btn" onclick="toggleViewModal()">✖</button>
+            </div>
+            <div class="detail-content">
+                <div class="right-detail">
+                    <div class="detail">
+                        <p>Competition Title</p>
+                        <p id="view-title"></p>
+                    </div>
+                    <div class="detail">
+                        <p>Description</p>
+                        <p id="view-description"></p>
+                    </div>
+                    <div class="detail">
+                        <p>Category</p>
+                        <p id="view-category"></p>
+                    </div>
+                    <div class="detail">
+                        <p>Date</p>
+                        <p id="view-date"></p>
+                    </div>
+                </div>
+                <div class="left-detail">
+                    <div class="detail">
+                        <p>Organizer</p>
+                        <p id="view-organizer"></p>
+                    </div>
+                    <div class="detail">
+                        <p>Certificate</p>
+                        <img id="view-certificate" src="" alt="">
+                    </div>
+                    <div class="detail">
+                        <p>Activity Documentation</p>
+                        <img id="view-documentation" src="" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="detail-status">
+                <?php if ($achievement['achievement_status'] === 'Approved'): ?>
+                    <p class="verification-info">
+                        Approved by: <?php echo isset($achievement['verification_by']) ? htmlspecialchars($achievement['verification_by']) : 'System'; ?><br>
+                        on <?php echo isset($achievement['verification_at']) ? date('d M Y H:i', strtotime($achievement['verification_at'])) : '-'; ?>
+                    </p>
+                <?php elseif ($achievement['achievement_status'] === 'Rejected'): ?>
+                    <p class="rejected-info">
+                        Rejected by: <?php echo isset($achievement['verification_by']) ? htmlspecialchars($achievement['verification_by']) : 'System'; ?><br>
+                        on <?php echo isset($achievement['verification_at']) ? date('d M Y H:i', strtotime($achievement['verification_at'])) : '-'; ?>
+                    </p>
+                <?php elseif ($achievement['achievement_status'] === 'Pending'): ?>
+                    <p class="pending-info">Waiting for verification</p>
+                <?php endif; ?>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.getElementById('achievementForm').addEventListener('submit', async (e) => {
             e.preventDefault();
+            const submitButton = document.getElementById('submit');
+            submitButton.disabled = true;
+            submitButton.textContent = 'Submitting...';
 
             try {
                 const formData = new FormData(e.target);
 
                 const response = await fetch('/achievement/create', {
                     method: 'POST',
-                    body: formData
+                    body: formData,
+                    redirect: 'follow'
                 });
+
+                if (response.redirected) {
+                    window.location.href = response.url;
+                    return;
+                }
 
                 const contentType = response.headers.get('content-type');
                 const result = contentType?.includes('application/json') ?
@@ -176,6 +257,7 @@
 
                 if (result.success) {
                     alert('Achievement submitted successfully');
+                    document.getElementById('achievementForm').reset();
                     window.location.href = '/dashboard';
                 } else {
                     throw new Error(result.error || 'Submission failed');
@@ -183,6 +265,9 @@
             } catch (error) {
                 console.error('Error:', error);
                 alert('Error submitting achievement: ' + error.message);
+            } finally {
+                submitButton.disabled = false;
+                submitButton.textContent = 'Submit';
             }
         });
     </script>

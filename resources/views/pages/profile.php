@@ -12,7 +12,7 @@
 <body>
     <div class="container">
 
-        <?php require_once '../resources/views/components/navbar.html'; ?>
+        <?php require_once '../resources/views/components/navbar.php'; ?>
 
         <main>
             <div class="content-header-profile">
@@ -24,20 +24,20 @@
                 </div>
                 <div class="center-profile">
                     <ul>
-                        <li><strong>NIM:</strong> 12345678</li>
-                        <li><strong>Name:</strong> Adam Smith</li>
-                        <li><strong>Study Program:</strong> D4 Informatics Engineering</li>
-                        <li><strong>Class:</strong> 2I</li>
-                        <li><strong>Gender:</strong> Male</li>
+                        <li><strong>NIM:</strong> <?php echo $studentProfile['student_nim'] ?></li>
+                        <li><strong>Name:</strong> <?php echo $studentProfile['student_name'] ?></li>
+                        <li><strong>Study Program:</strong> <?php echo $studentProfile['student_study_program'] ?></li>
+                        <li><strong>Class:</strong> <?php echo $studentProfile['student_class'] ?></li>
+                        <li><strong>Gender:</strong> <?php echo ($studentProfile['student_gender'] === 'M') ? "Male" : "Female" ?></li>
                     </ul>
                 </div>
                 <div class="right-profile">
                     <ul>
-                        <li><strong>Date of Birth:</strong> 12 March 2005</li>
-                        <li><strong>Address:</strong> Jl. Jalan No. 45</li>
-                        <li><strong>Enrollment Date:</strong> 2023/08/28</li>
-                        <li><strong>Phone Number:</strong> 08565431236</li>
-                        <li><strong>Email:</strong> adamsmith@polinema.id</li>
+                        <li><strong>Date of Birth:</strong> <?php echo date('d M Y', strtotime($studentProfile['student_date_of_birth'])) ?></li>
+                        <li><strong>Address:</strong> <?php echo $studentProfile['student_address'] ?></li>
+                        <li><strong>Enrollment Date:</strong> <?php echo date('Y/m/d', strtotime($studentProfile['student_date_of_birth'])) ?></li>
+                        <li><strong>Phone Number:</strong> <?php echo $studentProfile['student_phone_number'] ?></li>
+                        <li><strong>Email:</strong> <?php echo $studentProfile['user_email'] ?></li>
                     </ul>
                 </div>
         </main>
@@ -69,16 +69,26 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>TechFest Hackathon 2024</td>
-                        <td>International</td>
-                        <td>University</td>
-                        <td>2024/09/10</td>
-                        <td>
-                            <button class="see-details" onclick="toggleDetail()">See details</button>
-                        </td>
-                    </tr>
+                    <?php if (isset($achievements) && !empty($achievements)): ?>
+                        <?php foreach ($achievements as $index => $achievement): ?>
+                            <tr>
+                                <td><?php echo $index + 1 ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_title']) ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_category']) ?></td>
+                                <td><?php echo htmlspecialchars($achievement['achievement_organizer']) ?></td>
+                                <td><?php echo date('Y/m/d', strtotime($achievement['achievement_date'])) ?></td>
+                                <td>
+                                    <button class="see-details" onclick="toggleDetail('<?php echo $achievement['achievement_id'] ?>')">
+                                        See details
+                                    </button>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <tr>
+                            <td colspan="6" class="text-center">No achievements found</td>
+                        </tr>
+                    <?php endif; ?>
                 </tbody>
             </table>
         </main>
