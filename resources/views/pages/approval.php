@@ -1,6 +1,28 @@
 <link rel="stylesheet" href="/assets/css/approval.css">
 <script defer src="/assets/js/pagination.js"></script>
 
+<script>
+    window.openAchievementModal = function(element) {
+        console.log('Modal trigger clicked for Achievement ID:', element.getAttribute('data-achievement-id'));
+        const modal = document.getElementById('detail-modal');
+        if (modal) {
+            modal.style.display = 'flex';
+            // Optional: Add a class for CSS display handling
+            modal.classList.add('show');
+        } else {
+            console.error('Modal element not found');
+        }
+    }
+
+    window.toggleDetail = function() {
+        const modal = document.getElementById('detail-modal');
+        if (modal) {
+            modal.style.display = 'none';
+            modal.classList.remove('show');
+        }
+    }
+</script>
+
 <body>
     <div class="approval-page">
         <div class="container">
@@ -39,7 +61,18 @@
                                 <td><?php echo htmlspecialchars($achievement['achievement_category']) ?></td>
                                 <td><?php echo htmlspecialchars($achievement['achievement_date']) ?></td>
                                 <td>
-                                    <div class="status <?php echo strtolower($achievement['achievement_status']) ?>">
+                                    <div class="status <?php echo strtolower($achievement['achievement_status']) ?>"
+                                        data-achievement-id="<?php echo $achievement['achievement_id'] ?>"
+                                        data-title="<?php echo htmlspecialchars($achievement['achievement_title']) ?>"
+                                        data-description="<?php echo htmlspecialchars($achievement['achievement_description']) ?>"
+                                        data-category="<?php echo htmlspecialchars($achievement['achievement_category']) ?>"
+                                        data-date="<?php echo htmlspecialchars($achievement['achievement_date']) ?>"
+                                        data-organizer="<?php echo htmlspecialchars($achievement['achievement_organizer']) ?>"
+                                        data-certificate="<?php echo htmlspecialchars($achievement['certificate_file'] ?? '') ?>"
+                                        data-documentation="<?php echo htmlspecialchars($achievement['documentation_file'] ?? '') ?>"
+                                        data-certificate-type="<?php echo pathinfo($achievement['achievement_certifications'] ?? '', PATHINFO_EXTENSION) ?: 'png' ?>"
+                                        data-documentation-type="<?php echo pathinfo($achievement['achievement_activities_documentation'] ?? '', PATHINFO_EXTENSION) ?: 'png' ?>"
+                                        style="cursor: pointer;">
                                         <div class="img-status">
                                             <img src="../../assets/icons/<?php echo strtolower($achievement['achievement_status']) ?>.png" alt="">
                                         </div>
@@ -100,7 +133,7 @@
         </div>
 
         <!-- Input Achievement Modal -->
-        <div class="achievement-detail" id="detail-modal">
+        <div class="achievement-detail" id="detail-modal" data-achievement-id="">
             <div class="achievement-detail-content">
                 <div class="header-detail">
                     <h3>Achievement Verification</h3>
@@ -110,44 +143,55 @@
                     <div class="right-detail">
                         <div class="detail">
                             <p>Competition Title</p>
-                            <p>TechFest Hackathon 2024</p>
+                            <p id="modal-title">TechFest Hackathon 2024</p>
                         </div>
                         <div class="detail">
                             <p>Description</p>
-                            <p>1st Place in App Development Competition</p>
+                            <p id="modal-description">1st Place in App Development Competition</p>
                         </div>
                         <div class="detail">
                             <p>Category</p>
-                            <p>International</p>
+                            <p id="modal-category">International</p>
                         </div>
                         <div class="detail">
                             <p>Date</p>
-                            <p>2024/09/10</p>
+                            <p id="modal-date">2024/09/10</p>
                         </div>
                     </div>
                     <div class="left-detail">
                         <div class="detail">
                             <p>Organizer</p>
-                            <p>International</p>
+                            <p id="modal-organizer">International</p>
                         </div>
                         <div class="detail">
                             <p>Certificate</p>
-                            <img src="/assets/images/sertif.png" alt="">
+                            <img id="modal-certificate" src="" alt="">
                         </div>
                         <div class="detail">
                             <p>Activity Documentation</p>
-                            <img src="/assets/images/sertif.png" alt="">
+                            <img id="modal-documentation" src="" alt="">
                         </div>
                     </div>
                 </div>
                 <div class="detail-actions">
-                    <button id="reject">Reject</button>
-                    <button id="approve">Approve</button>
+                    <?php if ($achievement['achievement_status'] === 'Approved'): ?>
+                        <p class="verification-info">
+                            Approved by: <?php echo htmlspecialchars($achievement['verification_by']); ?><br>
+                            on <?php echo date('d M Y H:i', strtotime($achievement['verification_at'])); ?>
+                        </p>
+                    <?php elseif ($achievement['achievement_status'] === 'Rejected'): ?>
+                        <p class="rejected-info">
+                            Rejected by: <?php echo htmlspecialchars($achievement['verification_by']); ?><br>
+                            on <?php echo date('d M Y H:i', strtotime($achievement['verification_at'])); ?>
+                        </p>
+                    <?php else: ?>
+                        <button id="reject" type="button" onclick="handleReject()">Reject</button>
+                        <button id="approve" type="button" onclick="handleApprove()">Approve</button>
+                    <?php endif; ?>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <script src="/assets/js/script.js"></script>
 </body>
