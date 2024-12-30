@@ -61,18 +61,21 @@
                                 <td><?php echo htmlspecialchars($achievement['achievement_category']) ?></td>
                                 <td><?php echo htmlspecialchars($achievement['achievement_date']) ?></td>
                                 <td>
-                                    <div class="status <?php echo strtolower($achievement['achievement_status']) ?>"
-                                        data-achievement-id="<?php echo $achievement['achievement_id'] ?>"
-                                        data-title="<?php echo htmlspecialchars($achievement['achievement_title']) ?>"
-                                        data-description="<?php echo htmlspecialchars($achievement['achievement_description']) ?>"
-                                        data-category="<?php echo htmlspecialchars($achievement['achievement_category']) ?>"
-                                        data-date="<?php echo htmlspecialchars($achievement['achievement_date']) ?>"
-                                        data-organizer="<?php echo htmlspecialchars($achievement['achievement_organizer']) ?>"
-                                        data-certificate="<?php echo htmlspecialchars($achievement['certificate_file'] ?? '') ?>"
-                                        data-documentation="<?php echo htmlspecialchars($achievement['documentation_file'] ?? '') ?>"
-                                        data-certificate-type="<?php echo pathinfo($achievement['achievement_certifications'] ?? '', PATHINFO_EXTENSION) ?: 'png' ?>"
-                                        data-documentation-type="<?php echo pathinfo($achievement['achievement_activities_documentation'] ?? '', PATHINFO_EXTENSION) ?: 'png' ?>"
-                                        style="cursor: pointer;">
+                                    <!-- In the status div where modal is triggered -->
+                                    <div class="status <?= strtolower($achievement['achievement_status']) ?>"
+                                        data-achievement-id="<?= $achievement['achievement_id'] ?>"
+                                        data-title="<?= htmlspecialchars($achievement['achievement_title']) ?>"
+                                        data-description="<?= htmlspecialchars($achievement['achievement_description']) ?>"
+                                        data-category="<?= htmlspecialchars($achievement['achievement_category']) ?>"
+                                        data-date="<?= htmlspecialchars($achievement['achievement_date']) ?>"
+                                        data-organizer="<?= htmlspecialchars($achievement['achievement_organizer']) ?>"
+                                        data-certificate="<?= $achievement['certificate_file'] ?? '' ?>"
+                                        data-documentation="<?= $achievement['documentation_file'] ?? '' ?>"
+                                        data-status="<?= htmlspecialchars($achievement['achievement_status']) ?>"
+                                        data-verification-by="<?= htmlspecialchars($achievement['verification_by'] ?? '') ?>"
+                                        data-verification-at="<?= isset($achievement['verification_at']) ? date('d M Y H:i', strtotime($achievement['verification_at'])) : '' ?>"
+                                        style="cursor: pointer;"
+                                        onclick="openAchievementModal(this)">
                                         <div class="img-status">
                                             <img src="../../assets/icons/<?php echo strtolower($achievement['achievement_status']) ?>.png" alt="">
                                         </div>
@@ -174,20 +177,6 @@
                     </div>
                 </div>
                 <div class="detail-actions">
-                    <?php if ($achievement['achievement_status'] === 'Approved'): ?>
-                        <p class="verification-info">
-                            Approved by: <?php echo htmlspecialchars($achievement['verification_by']); ?><br>
-                            on <?php echo date('d M Y H:i', strtotime($achievement['verification_at'])); ?>
-                        </p>
-                    <?php elseif ($achievement['achievement_status'] === 'Rejected'): ?>
-                        <p class="rejected-info">
-                            Rejected by: <?php echo htmlspecialchars($achievement['verification_by']); ?><br>
-                            on <?php echo date('d M Y H:i', strtotime($achievement['verification_at'])); ?>
-                        </p>
-                    <?php else: ?>
-                        <button id="reject" type="button" onclick="handleReject()">Reject</button>
-                        <button id="approve" type="button" onclick="handleApprove()">Approve</button>
-                    <?php endif; ?>
                 </div>
             </div>
         </div>

@@ -28,8 +28,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!modal || !element) return;
 
         modal.setAttribute('data-achievement-id', element.dataset.achievementId);
-        console.log('Setting achievement ID:', element.dataset.achievementId);
 
+        // Set modal content
         const data = {
             id: element.dataset.achievementId,
             title: element.dataset.title,
@@ -38,15 +38,20 @@ document.addEventListener('DOMContentLoaded', () => {
             date: element.dataset.date,
             organizer: element.dataset.organizer,
             certificate: element.dataset.certificate,
-            documentation: element.dataset.documentation
+            documentation: element.dataset.documentation,
+            status: element.dataset.status,
+            verificationBy: element.dataset.verificationBy,
+            verificationAt: element.dataset.verificationAt
         };
 
+        // Populate modal content
         document.getElementById('modal-title').textContent = data.title;
         document.getElementById('modal-description').textContent = data.description;
         document.getElementById('modal-category').textContent = data.category;
         document.getElementById('modal-date').textContent = data.date;
         document.getElementById('modal-organizer').textContent = data.organizer;
 
+        // Handle file displays
         const certificateImg = document.getElementById('modal-certificate');
         const certificateType = element.dataset.certificateType || 'png';
         displayFile(certificateImg, data.certificate, certificateType);
@@ -55,7 +60,29 @@ document.addEventListener('DOMContentLoaded', () => {
         const documentationType = element.dataset.documentationType || 'png';
         displayFile(documentationImg, data.documentation, documentationType);
 
-        // Show modal
+        const detailActions = document.querySelector('#detail-modal .detail-actions');
+        console.log('Detail Actions Element:', detailActions); // Debug log
+
+        if (detailActions) {
+            if (data.status === 'Approved') {
+                detailActions.innerHTML = `
+                    <p class="verification-info">
+                        Approved by: ${data.verificationBy || 'System'}<br>
+                        on ${data.verificationAt || '-'}
+                    </p>`;
+            } else if (data.status === 'Rejected') {
+                detailActions.innerHTML = `
+                    <p class="rejected-info">
+                        Rejected by: ${data.verificationBy || 'System'}<br>
+                        on ${data.verificationAt || '-'}
+                    </p>`;
+            } else {
+                detailActions.innerHTML = `
+                    <button id="reject" type="button" onclick="handleReject()">Reject</button>
+                    <button id="approve" type="button" onclick="handleApprove()">Approve</button>`;
+            }
+        }
+
         modal.style.display = 'flex';
         modal.classList.add('show');
     }
