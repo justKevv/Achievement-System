@@ -15,7 +15,8 @@ class Chairman extends Model
         parent::__construct($db);
     }
 
-    public function save($table, $data = []) {
+    public function save($table, $data = [])
+    {
         try {
             if (empty($data['user_id']) || empty($data['chairman_name']) || empty($data['chairman_nip'])) {
                 error_log('Missing required chairman data');
@@ -38,7 +39,8 @@ class Chairman extends Model
         }
     }
 
-    public function update($table, $data, $where) {
+    public function update($table, $data, $where)
+    {
         try {
             $query = "UPDATE {$this->table}
                      SET chairman_name = :chairman_name,
@@ -59,7 +61,30 @@ class Chairman extends Model
         }
     }
 
-    public function delete($table, $where, $params) {
+    public function updateChairman($userId, $data)
+    {
+        try {
+            $query = "UPDATE dbo.chairman SET
+            chairman_name = :chairman_name,
+            chairman_nip = :chairman_nip
+            WHERE user_id = :user_id";
+
+            $params = [
+                ':user_id' => $userId,
+                ':chairman_name' => $data['chairman_name'],
+                ':chairman_nip' => $data['chairman_nip']
+            ];
+
+            return $this->db->prepareAndExecute($query, $params);
+        } catch (\PDOException $e) {
+            error_log("Error updating chairman: " . $e->getMessage());
+            throw $e;
+        }
+    }
+
+
+    public function delete($table, $where, $params)
+    {
         try {
             $query = "DELETE FROM {$this->table} WHERE chairman_id = :chair";
 
@@ -67,11 +92,21 @@ class Chairman extends Model
             $stmt->bindParam(':chairman_id', $where['chairman_id']);
 
             return $stmt->execute($params);
-
         } catch (\PDOException $e) {
             error_log("Error deleting chairman: " . $e->getMessage());
             return false;
         }
     }
 
+    public function deleteChairman($userId)
+    {
+        try {
+            $query = "DELETE FROM dbo.chairman WHERE user_id = :user_id";
+            $params = [':user_id' => $userId];
+            return $this->db->prepareAndExecute($query, $params);
+        } catch (\PDOException $e) {
+            error_log("Error in deleteChairman: " . $e->getMessage());
+            throw $e;
+        }
+    }
 }
