@@ -8,6 +8,7 @@ window.toggleDetail = async function (userId = null) {
     const body = document.body;
     const headerTitle = modal.querySelector('.header-left h2');
     const form = document.getElementById('user-form');
+    const roleSelect = document.getElementById('role-select');
 
     if (modal.style.display === 'flex') {
         modalContent.classList.remove('show');
@@ -17,7 +18,18 @@ window.toggleDetail = async function (userId = null) {
             modal.style.display = 'none';
             body.classList.remove('modal-open');
             form.reset(); // Reset form when closing
+            roleSelect.value = ''; // Reset role select
         }, 300);
+
+        // Hide all role-specific fields
+        const fields = ['student-fields', 'admin-fields', 'chairman-fields'];
+        fields.forEach(field => {
+            const element = document.getElementById(field);
+            if (element) {
+                element.style.display = 'none';
+                element.classList.remove('active-role');
+            }
+        });
     } else {
         modal.style.display = 'flex';
         body.classList.add('modal-open');
@@ -30,6 +42,17 @@ window.toggleDetail = async function (userId = null) {
             headerTitle.textContent = 'Add New User';
             document.getElementById('user-id').value = '';
             form.reset();
+            roleSelect.value = '';
+
+            // Hide all role-specific fields for new user
+            const fields = ['student-fields', 'admin-fields', 'chairman-fields'];
+            fields.forEach(field => {
+                const element = document.getElementById(field);
+                if (element) {
+                    element.style.display = 'none';
+                    element.classList.remove('active-role');
+                }
+            });
         }
 
         void modal.offsetHeight;
@@ -45,8 +68,19 @@ window.toggleFilter = function () {
 
 window.toggleActionMenu = function (button) {
     const dropdown = button.nextElementSibling;
-    if (!dropdown) return;
-    dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    const allDropdowns = document.querySelectorAll('.dropdown');
+
+    // Close all other dropdowns first
+    allDropdowns.forEach(d => {
+        if (d !== dropdown) {
+            d.style.display = 'none';
+        }
+    });
+
+    // Toggle the clicked dropdown
+    if (dropdown) {
+        dropdown.style.display = dropdown.style.display === 'block' ? 'none' : 'block';
+    }
 };
 window.resetFilter = function () {
     const studyProgram = document.getElementById('study-program');
@@ -67,7 +101,7 @@ window.resetFilterUser = function () {
 
 
 // Form handling
-window.updateFormFields = function(role) {
+window.updateFormFields = function (role) {
     const studentFields = document.getElementById('student-fields');
     const adminFields = document.getElementById('admin-fields');
     const chairmanFields = document.getElementById('chairman-fields');
@@ -76,13 +110,13 @@ window.updateFormFields = function(role) {
     [studentFields, adminFields, chairmanFields].forEach(field => {
         if (field) {
             field.style.display = 'none';
-            field.classList.remove('active');
+            field.classList.remove('active-role');
         }
     });
 
     // Show selected form
     let targetField = null;
-    switch(role) {
+    switch (role) {
         case 'student': targetField = studentFields; break;
         case 'admin': targetField = adminFields; break;
         case 'chairman': targetField = chairmanFields; break;
@@ -91,59 +125,69 @@ window.updateFormFields = function(role) {
     if (targetField) {
         targetField.style.display = 'block'; // Change to block
         void targetField.offsetHeight; // Force reflow
-        targetField.classList.add('active');
+        targetField.classList.add('active-role');
     }
 };
 
 async function loadUserData(userId) {
     try {
         console.log('Loading user data for ID:', userId);
-        const response = await fetch(`../../api/users/get/${userId}`);
+        const response = await fetch(`/api/users/get/${userId}`);
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
         const userData = await response.json();
         console.log('Received user data:', userData);
 
-        if (userData) {
-            // Set role and trigger form update
-            const roleSelect = document.getElementById('role-select');
-            roleSelect.value = userData.role;
-            updateFormFields(userData.role);
+        // First set the email and role
+        document.getElementById('email').value = userData.user_email || '';
 
-            // Set common fields
-            document.getElementById('email').value = userData.email || '';
-            // Don't set password on edit
+        // Determine role from role_id
+        let role;
+        switch (userData.role_id) {
+            case 'S': role = 'student'; break;
+            case 'A': role = 'admin'; break;
+            case 'C': role = 'chairman'; break;
+            default: role = '';
+        }
 
-            // Set role-specific fields
-            switch (userData.role) {
-                case 'student':
-                    document.getElementById('student-nim').value = userData.student_nim || '';
-                    document.getElementById('student-name').value = userData.student_name || '';
-                    document.getElementById('student-study-program').value = userData.student_study_program || '';
-                    document.getElementById('student-class').value = userData.student_class || '';
-                    document.getElementById('student-gender').value = userData.student_gender || '';
-                    document.getElementById('student-date-of-birth').value = userData.student_date_of_birth || '';
-                    document.getElementById('student-enrollment-date').value = userData.student_enrollment_date || '';
-                    document.getElementById('student-address').value = userData.student_address || '';
-                    document.getElementById('student-phone-number').value = userData.student_phone_number || '';
-                    break;
-                case 'admin':
-                    document.getElementById('admin-name').value = userData.admin_name || '';
-                    document.getElementById('admin-nip').value = userData.admin_nip || '';
-                    break;
-                case 'chairman':
-                    document.getElementById('chairman-name').value = userData.chairman_name || '';
-                    document.getElementById('chairman-nip').value = userData.chairman_nip || '';
-                    break;
-            }
+        // Set the role select and trigger the change event
+        const roleSelect = document.getElementById('role-select');
+        roleSelect.value = role;
+        updateFormFields(role);
+
+        // Now populate the specific fields based on role
+        switch (role) {
+            case 'student':
+                document.getElementById('student-nim').value = userData.student_nim || '';
+                document.getElementById('student-name').value = userData.name || '';
+                document.getElementById('student-study-program').value = userData.student_study_program || '';
+                document.getElementById('student-class').value = userData.student_class || '';
+                document.getElementById('student-gender').value = userData.student_gender || '';
+                document.getElementById('student-date-of-birth').value = userData.student_date_of_birth || '';
+                document.getElementById('student-enrollment-date').value = userData.student_enrollment_date || '';
+                document.getElementById('student-address').value = userData.student_address || '';
+                document.getElementById('student-phone-number').value = userData.student_phone_number || '';
+                break;
+            case 'admin':
+                document.getElementById('admin-name').value = userData.name || '';
+                document.getElementById('admin-nip').value = userData.admin_nip || '';
+                break;
+            case 'chairman':
+                document.getElementById('chairman-name').value = userData.name || '';
+                document.getElementById('chairman-nip').value = userData.chairman_nip || '';
+                break;
         }
     } catch (error) {
         console.error('Error loading user data:', error);
-        alert('Error loading user data');
+        alert('Error loading user data: ' + error.message);
     }
 }
 
-
 // Form submission handler
-window.handleSubmit = async function(e) {
+window.handleSubmit = async function (e) {
     e.preventDefault();
     console.log('Submit clicked');
 
@@ -179,16 +223,24 @@ window.handleSubmit = async function(e) {
     }
 
     try {
-        const url = isEdit ? `../../api/users/edit/${userId}` : '../../api/users/add';
-        const method = isEdit ? 'PUT' : 'POST';
+        const url = isEdit ? `/api/users/edit/${userId}` : '/api/users/add';
+        console.log('Request URL:', url);
+        console.log('Request Data:', formData);
 
         const response = await fetch(url, {
-            method: method,
+            method: isEdit ? 'PUT' : 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
             },
             body: JSON.stringify(formData)
         });
+
+        if (!response.ok) {
+            const text = await response.text();
+            console.error('Response Text:', text);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
 
         const result = await response.json();
         console.log('Response:', result);
@@ -206,13 +258,61 @@ window.handleSubmit = async function(e) {
     }
 };
 
+window.deleteRow = async function (userId) {
+    if (confirm('Are you sure you want to delete this user?')) {
+        try {
+            const response = await fetch(`/api/users/delete/${userId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                }
+            });
+
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
+            const result = await response.json();
+
+            if (result.success) {
+                alert('User deleted successfully!');
+                window.location.reload();
+            } else {
+                throw new Error(result.message || 'Failed to delete user');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            alert('Error deleting user: ' + error.message);
+        }
+    }
+};
+
 document.addEventListener('DOMContentLoaded', () => {
     // Form submission setup
     const form = document.getElementById('user-form');
     if (form) {
-        form.addEventListener('submit', (e) => {
+        form.addEventListener('submit', async (e) => {
             e.preventDefault();
-            handleSubmit(e);
+            await handleSubmit(e);
+        });
+
+        form.querySelectorAll('input').forEach(input => {
+            input.addEventListener('keypress', async (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent modal from closing
+                    await handleSubmit(e);
+                }
+            });
+        });
+
+        form.querySelectorAll('select').forEach(select => {
+            select.addEventListener('keypress', async (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault(); // Prevent modal from closing
+                    await handleSubmit(e);
+                }
+            });
         });
     }
 
@@ -222,7 +322,15 @@ document.addEventListener('DOMContentLoaded', () => {
             e.preventDefault();
             handleSubmit(e);
         });
-    }
+    };
+
+    if (!event.target.closest('.action-menu')) {
+        // Close all dropdowns
+        const allDropdowns = document.querySelectorAll('.dropdown');
+        allDropdowns.forEach(dropdown => {
+            dropdown.style.display = 'none';
+        });
+    };
 
     // Modal handling
     const modal = document.getElementById('detail-modal');
@@ -242,8 +350,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close on ESC key
     document.addEventListener('keydown', (e) => {
+        const modal = document.getElementById('detail-modal');
         if (e.key === 'Escape' && modal.style.display === 'flex') {
             window.toggleDetail();
         }
+    });
+});
+
+document.querySelectorAll('.action-menu').forEach(menu => {
+    menu.addEventListener('click', function (event) {
+        event.stopPropagation();
     });
 });
