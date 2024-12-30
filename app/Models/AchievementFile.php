@@ -4,44 +4,44 @@ namespace App\Models;
 
 use PDO;
 
-class AchievementFile extends Model
+class AchievementFile extends BaseModel
 {
-    protected $db;
     protected $table = 'dbo.achievement_files';
-    protected $id = 'file_id';
-
-    public function __construct($db)
-    {
-        $this->db = $db;
-    }
+    protected $primaryKey = 'file_id';
+    protected $fillable = [
+        'achievement_id',
+        'achievement_activities_documentation',
+        'achievement_certifications',
+    ];
 
     public function create($achievementId, $activities, $certificate)
     {
         try {
-            // Convert file contents to base64 to avoid encoding issues
-            $activitiesContent = base64_encode($activities);
-            $certificateContent = base64_encode($certificate);
+            $this->validateFileContent($activities);
+            $this->validateFileContent($certificate);
+
+            // Convert binary data to hex string for SQL Server
+            $activitiesHex = '0x' . bin2hex($activities);
+            $certificateHex = '0x' . bin2hex($certificate);
 
             $sql = "INSERT INTO {$this->table}
-                (achievement_id, achievement_activities_documentation, achievement_certifications, uploaded_at)
-                VALUES (
-                    :achievement_id,
-                    CAST(:activities AS VARBINARY(MAX)),
-                    CAST(:certificate AS VARBINARY(MAX)),
-                    GETDATE()
-                )";
+                   (achievement_id, achievement_activities_documentation, achievement_certifications, uploaded_at)
+                   VALUES (
+                       :achievement_id,
+                       CONVERT(varbinary(max), {$activitiesHex}),
+                       CONVERT(varbinary(max), {$certificateHex}),
+                       GETDATE()
+                   )";
 
-            $params = [
-                ':achievement_id' => $achievementId,
-                ':activities' => $activitiesContent,
-                ':certificate' => $certificateContent
-            ];
+            $stmt = $this->db->getConnection()->prepare($sql);
+            $stmt->bindParam(':achievement_id', $achievementId, PDO::PARAM_INT);
 
-            $stmt = $this->db->prepareAndExecute($sql, $params);
-            return true;
+            $result = $stmt->execute();
+            return $result !== false;
+
         } catch (\Exception $e) {
             error_log("File creation error: " . $e->getMessage());
-            return false;
+            throw $e;
         }
     }
 
