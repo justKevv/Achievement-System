@@ -2,7 +2,10 @@
 <html lang="en">
 
 <head>
-    <script src="/assets/js/load-page.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.css" />
+    <link rel="stylesheet" href="/assets/css/modal.css">
+
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard</title>
@@ -14,6 +17,10 @@
     <div id="content">
         <!-- Initial content can be loaded here if needed -->
     </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-modal/0.9.2/jquery.modal.min.js"></script>
+    <script src="/assets/js/load-page.js"></script>
 
     <script>
         const loadPage = window.loadPage;
@@ -28,15 +35,10 @@
             await window.loadPage(page);
         }
 
-        window.addEventListener('load', () => {
-            const lastPage = localStorage.getItem('currentPage') || 'home';
-            handlePageLoad(lastPage);
-        });
-
         document.querySelectorAll('.navlink .link').forEach(link => {
             link.addEventListener('click', async function(e) {
                 e.preventDefault();
-                const page = this.getAttribute('href');
+                const page = this.getAttribute('data-page');
                 localStorage.setItem('currentPage', page);
                 updateSelectablePosition(this); // Add this line
                 await handlePageLoad(page);
@@ -55,7 +57,13 @@
         // Load last visited page or default to home
         const initialPage = localStorage.getItem('currentPage') || 'home';
         window.loadPage(initialPage);
+
+        if (performance.navigation.type === 1) {
+            sessionStorage.removeItem('modalShown');
+        }
     </script>
+    <script src="/assets/js/approvalModal.js"></script>
+    <script src="/assets/js/submissionModal.js"></script>
 </body>
 
 </html>
