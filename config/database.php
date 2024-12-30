@@ -16,11 +16,11 @@ class database
 
     public function __construct()
     {
-        $this->dbHost = $_ENV['DB_HOST'];
-        $this->dbName = $_ENV['DB_NAME'];
-        $this->dbUsername = $_ENV['DB_USER'];
-        $this->dbPassword = $_ENV['DB_PASS'];
-        $this->connect();
+    $this->dbHost = 'database-pbl.cpa2ikaiaa8b.ap-southeast-2.rds.amazonaws.com';
+    $this->dbName = 'finalpro3';
+    $this->dbUsername = 'admin';
+    $this->dbPassword = 'y4J5btFWrNfXgRXyz3Vm';
+    $this->connect();
     }
 
     private function connect()
