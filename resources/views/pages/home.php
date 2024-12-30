@@ -1,4 +1,13 @@
 <?php if ($_SESSION['role_id'] == 'A') : ?>
+
+    <!-- Modal HTML -->
+    <?php if (isset($pendingAchievements) && count($pendingAchievements) > 0): ?>
+        <div id="pending-modal" class="modal">
+            <h3>Pending Achievements</h3>
+            <p>You have <?php echo count($pendingAchievements); ?> pending achievement(s):</p>
+        </div>
+    <?php endif; ?>
+
     <link rel="stylesheet" href="/assets/css/adminHome.css">
     <div class="home-page">
         <div class="content">
@@ -45,7 +54,7 @@
                                         <tr>
                                             <td><?php echo $rank['rank']; ?></td>
                                             <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
-                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                            <td><?php echo htmlspecialchars($totalAdmin[0]['total_points']); ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -173,11 +182,17 @@
                     <div class="stats">
                         <div class="detail-stats1">
                             <p>Achievement</p>
-                            <p><?php echo $total['total'] ?></p>
+                            <p><?php echo $total['total_points'] ?? 0 ?></p>
                         </div>
                         <div class="detail-stats">
                             <p>Current Rank</p>
-                            <p><?php echo $currRank = ($currentRank['total_achievements'] > 0) ? $currentRank['rank'] : "-"; ?></p>
+                            <p><?php
+                                echo $currRank = (isset($currentRank) && is_array($currentRank) &&
+                                    isset($currentRank['total_achievements']) &&
+                                    $currentRank['total_achievements'] > 0)
+                                    ? $currentRank['rank']
+                                    : "-";
+                                ?></p>
                         </div>
                     </div>
                     <a href="/profile"><button>My Profile</button></a>
@@ -199,7 +214,7 @@
                                         <tr>
                                             <td><?php echo $rank['rank']; ?></td>
                                             <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
-                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                            <td><?php echo $total['total_points'] ?? 0  ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
@@ -262,7 +277,7 @@
                                         <tr>
                                             <td><?php echo $rank['rank']; ?></td>
                                             <td><?php echo htmlspecialchars($rank['student_name']); ?></td>
-                                            <td><?php echo $rank['total_achievements']; ?></td>
+                                            <td><?php echo htmlspecialchars($totalChair[0]['total_points']); ?></td>
                                         </tr>
                                     <?php endif; ?>
                                 <?php endforeach; ?>

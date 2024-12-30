@@ -1,6 +1,5 @@
 <?php
 
-
 namespace App\Controller;
 
 use App\Models\Achievement;
@@ -36,11 +35,15 @@ class DashboardController extends Controller
         switch ($_SESSION['role_id']) {
             case 'A':
                 if ($page === 'home') {
+                    $pendingAchievements = $this->achievementModel->getPendingAchievements();
                     $stats = $this->achievementModel->getAchievementStats();
+                    $totalAdmin = $this->studentModel->getAllTotalPoints();
                     $data = [
                         'stats' => $stats,
                         'adminRecent' => $this->achievementModel->getRecentAchievements(),
                         'rankAdmin' => $this->studentModel->getRank(6),
+                        'pendingAchievements' => $pendingAchievements,
+                        'totalAdmin' => $totalAdmin
                     ];
                 } elseif ($page === 'approval') {
                     $adminAchievements = $this->achievementModel->getAllAchievements() ?? [];
@@ -64,8 +67,17 @@ class DashboardController extends Controller
                     ];
                 } elseif ($page === 'rank') {
                     $ranking = $this->studentModel->getRankAll() ?? [];
+                    $totalRank = $this->studentModel->getTotalAchievement($_SESSION['user_id']) ?? [];
                     $data = [
-                        'rankStudent' => $ranking
+                        'rankStudent' => $ranking,
+                        'totalRank' => $totalRank
+                    ];
+                } elseif ($page === 'profile') {
+                    $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
+                    $allAchievements = $this->achievementModel->getAchievementsByUserId($_SESSION['user_id']) ?? [];
+                    $data = [
+                        'studentProfile' => $mahasiswa,
+                        'allAchievements' => $allAchievements
                     ];
                 } else {
                     $mahasiswa = $this->studentModel->findByUserId($_SESSION['user_id']) ?? [];
@@ -91,11 +103,13 @@ class DashboardController extends Controller
                     $statsChairman = $this->achievementModel->getAchievementStats();
                     $chairmanRecent = $this->achievementModel->getRecentAchievements();
                     $rankChair = $this->studentModel->getRank(6);
+                    $totalChair = $this->studentModel->getAllTotalPoints(); // Changed to direct assignment
 
                     $data = [
                         'statsChairman' => $statsChairman,
                         'chairmanRecent' => $chairmanRecent,
                         'rankChair' => $rankChair,
+                        'totalChair' => $totalChair
                     ];
                 } else {
                     $chairmanStudents = $this->studentModel->getAllStudent() ?? [];

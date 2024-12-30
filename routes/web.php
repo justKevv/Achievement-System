@@ -10,6 +10,7 @@ use App\View;
 use App\ErrorHandler;
 
 use App\Controller\ForgetPasswordController;
+use App\Controller\ProfileController;
 use App\Controller\UserController;
 
 return function (App $app, $db) {
@@ -37,34 +38,54 @@ return function (App $app, $db) {
         return $userController->logout();
     });
 
+    $app->group('/api/achievements', function ($api) use ($db) {
+        $api->post('/approve/{id}', function ($request, $response, $args) use ($db) {
+            $achievementController = new AchievementController($db);
+            return $achievementController->approve($request, $response, $args);
+        });
+        $api->post('/reject/{id}', function ($request, $response, $args) use ($db) {
+            $achievementController = new AchievementController($db);
+            return $achievementController->reject($request, $response, $args);
+        });
+    })->add(new RoleMiddleware($app->getContainer(), 'A'))
+      ->add(new AuthMiddleware($app->getContainer()));
+
 
     $app->group('/', function ($web) use ($db) {
-
         $web->get('dashboard[/{page}]', function ($request, $response, $args) use ($db) {
             $dashboardController = new DashboardController($db);
             return $dashboardController->index($request, $response, $args);
         })->add(new RoleMiddleware($web->getContainer(), $_SESSION['role_id'] ?? null));
 
-        $web->get('profile', function ($request, $response, $args) {
-            View::render('../resources/views/pages/profile.php');
-            return $response;
+        $web->get('profile', function ($request, $response, $args) use ($db) {
+            $profileController = new ProfileController($db);
+            return $profileController->index($request, $response);
         })->add(new RoleMiddleware($web->getContainer(), $_SESSION['role_id'] ?? null));
 
         $web->post('achievement/create', function ($request, $response) use ($db) {
             $achievementController = new AchievementController($db);
             return $achievementController->create($request, $response);
         })->add(new RoleMiddleware($web->getContainer(), 'S'));
-
     })->add(new AuthMiddleware($app->getContainer()));
 
-    $app->post('/api/users/add', function ($request, $response) use ($db) {
-        $userController = new UserController($db);
-        return $userController->createUser($request, $response);
-    })->add(new AuthMiddleware($app->getContainer()));
-
-    $app->put('/api/users/edit/{id}', function ($request, $response, $args) use ($db) {
-        $userController = new UserController($db);
-        return $userController->updateUser($request, $response, $args);
+    // User Routes
+    $app->group('/api/users', function ($api) use ($db) {
+        $api->post('/add', function ($request, $response) use ($db) {
+            $userController = new UserController($db);
+            return $userController->createUser($request, $response);
+        });
+        $api->get('/get/{id}', function ($request, $response, $args) use ($db) {
+            $userController = new UserController($db);
+            return $userController->getUser($request, $response, $args);
+        });
+        $api->put('/edit/{id}', function ($request, $response, $args) use ($db) {
+            $userController = new UserController($db);
+            return $userController->updateUser($request, $response, $args);
+        });
+        $api->delete('/delete/{id}', function ($request, $response, $args) use ($db) {
+            $userController = new UserController($db);
+            return $userController->deleteUser($request, $response, $args);
+        });
     })->add(new AuthMiddleware($app->getContainer()));
 
     // Handle 404 Page
