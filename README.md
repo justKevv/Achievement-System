@@ -14,8 +14,8 @@ A web-based system for managing and tracking student achievements using PHP Slim
 
 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/SistemPrestasi.git
-cd SistemPrestasi
+git clone https://github.com/justKevv/Achievement-System.git
+cd Achievement-System
 ```
 2. Install dependencies
 ```bash
