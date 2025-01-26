@@ -38,21 +38,24 @@ DB_PASS=your_password
 ## Project Structure
 
 ```
-├───app
-│   ├───Controller
-│   └───Models
-├───config
-├───database
-├───public
-│   └───assets
-│       ├───icons
-│       └───images
-├───resources
-│   ├───css
-│   ├───js
-│   └───views
-│       └───components
-├───routes
-├───src
-└───vendor/
+├── 📂 app
+│   ├── 📂 Controller
+│   ├── 📂 Middleware
+│   ├── 📂 Models
+│   ├── 📂 Services
+├── 📂 config
+├── 📂 database
+├── 📂 public
+│   ├── 📂 assets
+│   │   ├── 📂 css
+│   │   ├── 📂 icons
+│   │   ├── 📂 images
+│   │   └── 📂 js
+├── 📂 resources
+│   └── 📂 views
+│       ├── 📂 components
+│       └── 📂 pages
+├── 📂 routes
+├── 📄 composer.json
+└── 📄 composer.lock
 ```
